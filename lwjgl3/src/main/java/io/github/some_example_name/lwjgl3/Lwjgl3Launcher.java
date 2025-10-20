@@ -1,8 +1,8 @@
-package puppy.code.lwjgl3;
+package io.github.some_example_name.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import puppy.code.GameLluvia;
+import io.github.some_example_name.GameLluvia;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
