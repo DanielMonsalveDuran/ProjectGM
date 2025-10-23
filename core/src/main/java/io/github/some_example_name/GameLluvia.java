@@ -23,6 +23,7 @@ public class GameLluvia extends ApplicationAdapter {
 	   private Tarro tarro;
 	   private Lluvia lluvia;
 	@Override
+	
 	public void create () {
 		 font = new BitmapFont(); // use libGDX's default Arial font
 		 
