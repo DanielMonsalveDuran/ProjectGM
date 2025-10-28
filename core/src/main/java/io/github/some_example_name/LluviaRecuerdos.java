@@ -84,17 +84,12 @@ public class LluviaRecuerdos {
             Texture texturaPowerUp;
             
             if (tipoPowerUp == 0) {
-                tipoString = "autotune";
-                texturaPowerUp = powerupAutotuneTexture;
+                nuevoObjeto = new PowerUpAmnesiaSelectiva(powerupAutotuneTexture, x, y);
             } else if (tipoPowerUp == 1) {
-                tipoString = "amnesia";
-                texturaPowerUp = powerupAmnesiaTexture;
+                nuevoObjeto = new PowerUpAutotuneEmocional(powerupAmnesiaTexture, x, y);
             } else {
-                tipoString = "coraza";
-                texturaPowerUp = powerupCorazaTexture;
+                nuevoObjeto = new PowerUpCorazaDeMacho(powerupCorazaTexture, x, y);
             }
-            
-            nuevoObjeto = new PowerUp(texturaPowerUp, x, y, tipoString);
         }
         
         objetosCaida.add(nuevoObjeto);

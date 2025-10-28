@@ -44,7 +44,7 @@ public abstract class PowerUp extends ObjetoCaida {
      * Aplica el efecto específico del power-up
      * CADA subclase implementa su comportamiento único
      */
-    public abstract void aplicarEfecto(Carlos carlos);
+    public abstract void aplicarEfectoPowerUp(Carlos carlos);
     
     /**
      * Efecto visual específico al ser activado
@@ -165,7 +165,7 @@ public abstract class PowerUp extends ObjetoCaida {
     /**
      * Información detallada para UI
      */
-    public final String getInfoDetallada() {
+    public String getInfoDetallada() {
         return String.format("%s: %s (%.1fs)", nombre, descripcion, duracion);
     }
 }
