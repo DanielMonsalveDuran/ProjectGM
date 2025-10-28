@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.Texture;
 public class Trago extends ObjetoCaida implements AfectableEmocionalmente{
     private int potenciaAlcoholica;
     private int boostAutoestima;
+    private int puntosScore;
     
     public Trago(Texture textura, float x, float y) {
         super(textura, x, y);
         this.potenciaAlcoholica = 10;
         this.boostAutoestima = 5;
+        this.puntosScore = 50;
     }
     
     // Implementación del método abstracto de ObjetoCaida
@@ -27,6 +29,7 @@ public class Trago extends ObjetoCaida implements AfectableEmocionalmente{
     public void aplicarEfectoEmocional(Carlos carlos) {
         carlos.aumentarEbriedad(potenciaAlcoholica);
         carlos.sumarAutoestima(boostAutoestima);
+        carlos.aumentarScore(puntosScore);
     }
     
     @Override

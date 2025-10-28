@@ -174,19 +174,18 @@ public class KaraokeDespecho extends ApplicationAdapter {
         // Comenzar dibujado
         batch.begin();
         
-        // Dibujar HUD (Heads-Up Display)
+        // ✅ HUD ACTUALIZADO: Ebriedad izquierda, Score derecha
         font.draw(batch, "Autoestima: " + carlos.getAutoestima(), 5, 475);
-        font.draw(batch, "Ebriedad: " + carlos.getEbriedad(), 720, 475);
-        font.draw(batch, "Estado: " + carlos.getEstadoAnimo(), 350, 475);
+        font.draw(batch, "Ebrio: " + carlos.getEbriedad() + "%", 5, 450);
+        font.draw(batch, "Estado: " + carlos.getEstadoAnimo(), 5, 425);
+        
+        // ✅ NUEVO: Score arriba a la derecha
+        font.draw(batch, "Score: " + carlos.getScore(), 650, 475);
+        font.draw(batch, String.format("Multiplicador: %.1fx", carlos.getMultiplicadorScore()), 650, 450);
         
         // Mostrar advertencia cuando la autoestima es crítica
         if (carlos.getAutoestima() <= 30) {
             font.draw(batch, "¡PELIGRO! Autoestima crítica", 300, 50);
-        }
-        
-        // Mostrar power-ups activos
-        if (carlos.getEbriedad() > 0) {
-            font.draw(batch, "🍺 Ebrio: " + (int)carlos.getEbriedad() + "%", 5, 450);
         }
         
         // Actualizar y dibujar elementos del juego si Carlos no está deprimido

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-
 public class Carlos {
     // ATRIBUTOS PRIVADOS (Encapsulamiento)
     private Rectangle area;
@@ -16,6 +15,7 @@ public class Carlos {
     private Sound sonidoLlanto;
     private int autoestima;
     private int ebriedad;
+    private int score; // ✅ Score infinito
     private String estadoAnimo;
     private int velocidad;
     private boolean deprimido;
@@ -28,8 +28,11 @@ public class Carlos {
     private boolean corazaActiva;
     private float tiempoPowerUp = 0;
     
-    private static final float INTERVALO_REDUCCION = 0.5f; // Reducir cada 0.5 segundos
-    private static final int CANTIDAD_REDUCCION = 1;       // Reducir 1 punto cada vez
+    // ✅ SIMPLIFICADO: Multiplicador solo por power-ups
+    private float multiplicadorScore;
+    
+    private static final float INTERVALO_REDUCCION = 0.5f;
+    private static final int CANTIDAD_REDUCCION = 1;
     private float tiempoDesdeUltimaReduccion = 0f;
     
     public Carlos(Texture tex, Sound ss) {
@@ -37,6 +40,7 @@ public class Carlos {
         this.sonidoLlanto = ss;
         this.autoestima = 100;
         this.ebriedad = 0;
+        this.score = 0;
         this.estadoAnimo = "Negación";
         this.velocidad = 400;
         this.deprimido = false;
@@ -46,6 +50,7 @@ public class Carlos {
         this.amnesiaActiva = false;
         this.corazaActiva = false;
         this.tiempoPowerUp = 0;
+        this.multiplicadorScore = 1.0f; // ✅ Base 1.0x siempre
     }
     
     // MÉTODOS PÚBLICOS (Interfaz controlada)
@@ -75,14 +80,14 @@ public class Carlos {
         if (area.x < 0) area.x = 0;
         if (area.x > 800 - 64) area.x = 800 - 64;
         
-        
+        // ✅ MANTENIDO: Sistema de reducción de ebriedad
         tiempoDesdeUltimaReduccion += Gdx.graphics.getDeltaTime();
         
         if (tiempoDesdeUltimaReduccion >= INTERVALO_REDUCCION) {
             if (ebriedad > 0) {
                 ebriedad -= CANTIDAD_REDUCCION;
                 if (ebriedad < 0) ebriedad = 0;
-                System.out.println("🍺 Ebriedad reducida a: " + ebriedad); // Para debug
+                System.out.println("🍺 Ebriedad reducida a: " + ebriedad);
             }
             tiempoDesdeUltimaReduccion = 0;
         }
@@ -97,13 +102,15 @@ public class Carlos {
     public void reiniciar() {
         this.autoestima = 100;
         this.ebriedad = 0;
+        this.score = 0;
         this.estadoAnimo = "Negación";
         this.deprimido = false;
         this.autotuneActivo = false;
         this.amnesiaActiva = false;
         this.corazaActiva = false;
         this.tiempoPowerUp = 0;
-        // Reiniciar posición si es necesario
+        this.multiplicadorScore = 1.0f; // ✅ Reiniciar a 1.0x
+        
         if (area != null) {
             area.x = 800 / 2 - 64 / 2;
             area.y = 20;
@@ -135,12 +142,21 @@ public class Carlos {
         }
     }
     
+    // ✅ NUEVO: Método para aumentar score (sin dependencia emocional)
+    public void aumentarScore(int puntos) {
+        int puntosConMultiplicador = (int)(puntos * multiplicadorScore);
+        this.score += puntosConMultiplicador;
+        System.out.println("⭐ +" + puntosConMultiplicador + " puntos! (Multiplicador: " + multiplicadorScore + "x)");
+    }
+    
     // GETTERS Y SETTERS (Control de acceso)
     public Rectangle getArea() { return area; }
     public int getAutoestima() { return autoestima; }
     public int getEbriedad() { return ebriedad; }
+    public int getScore() { return score; } // ✅ NUEVO GETTER
     public String getEstadoAnimo() { return estadoAnimo; }
     public boolean estaDeprimido() { return deprimido; }
+    public float getMultiplicadorScore() { return multiplicadorScore; } // ✅ NUEVO GETTER
     
     public void sumarAutoestima(int puntos) { 
         autoestima = Math.min(100, autoestima + puntos);
@@ -149,22 +165,25 @@ public class Carlos {
     public void aumentarEbriedad(int nivel) { 
         ebriedad += nivel;
         if (ebriedad > 100) ebriedad = 100;
-        System.out.println("🍺 Ebriedad: " + ebriedad + "/100"); // ← Para debug
+        System.out.println("🍺 Ebriedad: " + ebriedad + "/100");
     }
     
     public void activarAutotune(float duracion) {
         autotuneActivo = true;
         tiempoPowerUp = duracion;
+        recalcularMultiplicador(); // ✅ Recalcular multiplicador
     }
     
     public void activarAmnesia(float duracion) {
         amnesiaActiva = true;
         tiempoPowerUp = duracion;
+        recalcularMultiplicador(); // ✅ Recalcular multiplicador
     }
     
     public void activarCoraza(float duracion) {
         corazaActiva = true;
         tiempoPowerUp = duracion;
+        recalcularMultiplicador(); // ✅ Recalcular multiplicador
     }
     
     // MÉTODOS PRIVADOS (Encapsulamiento interno)
@@ -175,15 +194,30 @@ public class Carlos {
                 autotuneActivo = false;
                 amnesiaActiva = false;
                 corazaActiva = false;
+                // ✅ Solo recalcular multiplicador basado en power-ups
+                recalcularMultiplicador();
             }
         }
     }
     
     private void actualizarEstadoAnimo() {
+        // ✅ ESTE MÉTODO SE MANTIENE para el estado emocional visual
+        // pero ya NO afecta el multiplicador de score
+        
         if (autoestima >= 80) estadoAnimo = "Negación";
         else if (autoestima >= 60) estadoAnimo = "Ira";
         else if (autoestima >= 30) estadoAnimo = "Depresión";
         else estadoAnimo = "Aceptación";
+    }
+    
+    // ✅ NUEVO: Recalcular multiplicador solo basado en power-ups
+    private void recalcularMultiplicador() {
+        multiplicadorScore = 1.0f; // Base
+        
+        // ✅ Solo power-ups afectan el multiplicador
+        if (autotuneActivo) multiplicadorScore += 0.5f;
+        if (amnesiaActiva) multiplicadorScore += 0.3f;
+        if (corazaActiva) multiplicadorScore += 0.2f;
     }
     
     public void destruir() {

@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
  * Clase abstracta base para todos los objetos que caen
  * REQUISITO GM1.4: Clase abstracta con al menos 2 clases hijas
  */
-public abstract class ObjetoCaida implements AfectableEmocionalmente {
+public abstract class ObjetoCaida {
     protected Texture textura;
     protected Rectangle area;
     protected float velocidadCaida;
