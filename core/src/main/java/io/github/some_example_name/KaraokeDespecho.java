@@ -155,6 +155,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
     public void render() {
         // Verificar condición de derrota
         if (carlos.estaDerrotado()) {
+        	if (juegoActivo) { // Solo si el juego estaba activo antes de la derrota
+                pantallaGameOver.setScoreFinal(carlos.getScore()); 
+            }
             juegoActivo = false;
         }
         

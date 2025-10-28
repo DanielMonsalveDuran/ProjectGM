@@ -14,11 +14,12 @@ public class PantallaGameOver implements Screen {
     private SpriteBatch batch;
     private BitmapFont font;
     private BitmapFont fontTitulo;
+    private int scoreFinal;
     
     public PantallaGameOver(KaraokeDespecho juego) {
         this.juego = juego;
         this.batch = new SpriteBatch();
-        
+        this.scoreFinal = 0;
         this.font = new BitmapFont();
         this.fontTitulo = new BitmapFont();
         
@@ -27,6 +28,10 @@ public class PantallaGameOver implements Screen {
         fontTitulo.setColor(Color.RED);
         font.getData().setScale(1.2f);
         font.setColor(Color.WHITE);
+    }
+    
+    public void setScoreFinal(int score) {
+        this.scoreFinal = score;
     }
     
     @Override
@@ -48,6 +53,7 @@ public class PantallaGameOver implements Screen {
         // Dibujar mensaje
         font.draw(batch, "Carlos ha llegado a la aceptación...", 0, 300, 800, Align.center, false);
         font.draw(batch, "Su autoestima no pudo soportar más", 0, 250, 800, Align.center, false);
+        font.draw(batch, "Score: " + scoreFinal, 0, 200, 800, Align.center, false);
         
         // Dibujar opciones
         font.draw(batch, "Presiona R para Reintentar", 0, 150, 800, Align.center, false);
