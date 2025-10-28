@@ -223,4 +223,11 @@ public class Carlos {
     public void destruir() {
         textura.dispose();
     }
+    
+    public int getVelocidad() {
+    	return velocidad;
+    }
+    public void setVelocidad(int velocidad) {
+    	this.velocidad = velocidad;
+    }
 }
