@@ -28,7 +28,9 @@ public class Carlos {
     private boolean corazaActiva;
     private float tiempoPowerUp = 0;
     
-    private static final float REDUCCION_EBRIEDAD = 0.00001f;
+    private static final float INTERVALO_REDUCCION = 0.5f; // Reducir cada 0.5 segundos
+    private static final int CANTIDAD_REDUCCION = 1;       // Reducir 1 punto cada vez
+    private float tiempoDesdeUltimaReduccion = 0f;
     
     public Carlos(Texture tex, Sound ss) {
         this.textura = tex;
@@ -73,11 +75,16 @@ public class Carlos {
         if (area.x < 0) area.x = 0;
         if (area.x > 800 - 64) area.x = 800 - 64;
         
-        // ✅ AJUSTADO: Reducir ebriedad más lentamente
-        if (ebriedad > 0) {
-            //ebriedad -= Gdx.graphics.getDeltaTime() * REDUCCION_EBRIEDAD; // ← Usar constante
-        	ebriedad -= Gdx.graphics.getDeltaTime() - 1;
-            if (ebriedad < 0) ebriedad = 0;
+        
+        tiempoDesdeUltimaReduccion += Gdx.graphics.getDeltaTime();
+        
+        if (tiempoDesdeUltimaReduccion >= INTERVALO_REDUCCION) {
+            if (ebriedad > 0) {
+                ebriedad -= CANTIDAD_REDUCCION;
+                if (ebriedad < 0) ebriedad = 0;
+                System.out.println("🍺 Ebriedad reducida a: " + ebriedad); // Para debug
+            }
+            tiempoDesdeUltimaReduccion = 0;
         }
         
         actualizarPowerUps();
