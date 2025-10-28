@@ -64,7 +64,7 @@ public abstract class PowerUp extends ObjetoCaida {
      */
     public final void activarPowerUp(Carlos carlos) {
         // 1. Aplicar efecto principal
-        aplicarEfecto(carlos);
+    	aplicarEfectoPowerUp(carlos);
         
         // 2. Efecto visual
         activarEfectoVisual();
@@ -129,7 +129,7 @@ public abstract class PowerUp extends ObjetoCaida {
     @Override
     public void aplicarEfecto(Carlos carlos) {
         // Delega al método específico del power-up
-        activarPowerUp(carlos);
+    	this.activarPowerUp(carlos);
     }
     
     @Override

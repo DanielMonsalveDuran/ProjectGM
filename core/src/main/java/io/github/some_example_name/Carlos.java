@@ -168,6 +168,25 @@ public class Carlos {
         System.out.println("🍺 Ebriedad: " + ebriedad + "/100");
     }
     
+ // 🟢 NUEVO: Método para reducir ebriedad (usado por Amnesia)
+    public void reducirEbriedad(int nivel) {
+        ebriedad -= nivel;
+        if (ebriedad < 0) ebriedad = 0;
+        System.out.println("🍺 Ebriedad reducida a: " + ebriedad + "/100");
+    }
+
+    // 🟢 NUEVO: Método para reducir score sin multiplicador (usado por Amnesia)
+    public void reducirScore(int puntos) {
+        this.score -= puntos;
+        if (this.score < 0) this.score = 0;
+        System.out.println("⭐ -" + puntos + " puntos! (Amnesia)");
+    }
+
+    // 🟢 NUEVO GETTER: Para que Recuerdo pueda chequear la protección
+    public boolean isCorazaActiva() {
+        return corazaActiva;
+    }
+    
     public void activarAutotune(float duracion) {
         autotuneActivo = true;
         tiempoPowerUp = duracion;

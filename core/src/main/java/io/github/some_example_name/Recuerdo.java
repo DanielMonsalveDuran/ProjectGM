@@ -20,6 +20,13 @@ public class Recuerdo extends ObjetoCaida implements AfectableEmocionalmente {
     // Implementación EXPLÍCITA de la interfaz
     @Override
     public void aplicarEfectoEmocional(Carlos carlos) {
+        // 🛡️ NUEVA VERIFICACIÓN: Si la coraza está activa, el recuerdo no tiene efecto
+        if (carlos.isCorazaActiva()) {
+            System.out.println("🛡️ Recuerdo bloqueado por Coraza de Macho.");
+            return; // Detener el efecto negativo
+        }
+        
+        // Aplicar daño si no hay coraza
         carlos.deprimir();
         switch(tipoRecuerdo) {
             case "foto": carlos.sumarAutoestima(-15); break;

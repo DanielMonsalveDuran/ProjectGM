@@ -84,9 +84,11 @@ public class LluviaRecuerdos {
             Texture texturaPowerUp;
             
             if (tipoPowerUp == 0) {
-                nuevoObjeto = new PowerUpAmnesiaSelectiva(powerupAutotuneTexture, x, y);
+                // 🟢 CORREGIDO: Amnesia Selectiva usa powerupAmnesiaTexture
+                nuevoObjeto = new PowerUpAmnesiaSelectiva(powerupAmnesiaTexture, x, y);
             } else if (tipoPowerUp == 1) {
-                nuevoObjeto = new PowerUpAutotuneEmocional(powerupAmnesiaTexture, x, y);
+                // 🟢 CORREGIDO: Autotune Emocional usa powerupAutotuneTexture
+                nuevoObjeto = new PowerUpAutotuneEmocional(powerupAutotuneTexture, x, y);
             } else {
                 nuevoObjeto = new PowerUpCorazaDeMacho(powerupCorazaTexture, x, y);
             }

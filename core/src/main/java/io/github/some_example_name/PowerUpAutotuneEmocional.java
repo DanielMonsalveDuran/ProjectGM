@@ -13,6 +13,7 @@ public class PowerUpAutotuneEmocional extends PowerUp {
     private float tiempoAcumulado = 0f;
     private static final float INTERVALO_AUTOESTIMA = 5.0f; // Cada 5 segundos
     private int velocidadOriginal; // Para restaurar después
+    private Carlos targetCarlos;
     
     public PowerUpAutotuneEmocional(Texture textura, float x, float y) {
         super(textura, x, y, 
@@ -21,12 +22,13 @@ public class PowerUpAutotuneEmocional extends PowerUp {
               "+20 autoestima +1 cada 5s +movimiento", // descripción
               false,                                 // no instantáneo
               20);                                   // autoestima base (bonus inmediato)
+        
     }
     
     @Override
     public void aplicarEfectoPowerUp(Carlos carlos) {
         // 🔥 BONUS INMEDIATO (se ejecuta una vez)
-        
+    	this.targetCarlos = carlos;
         // 1. Bonus de autoestima inmediato (usa el sistema existente)
         carlos.sumarAutoestima(20);
         
@@ -41,6 +43,10 @@ public class PowerUpAutotuneEmocional extends PowerUp {
         this.tiempoAcumulado = 0f;
         
         System.out.println("🎤 AUTOTUNE PLUS: +20 autoestima, +velocidad");
+    }
+    
+    private Carlos getCarlos() {
+        return targetCarlos;
     }
     
     @Override
@@ -89,14 +95,11 @@ public class PowerUpAutotuneEmocional extends PowerUp {
         // 🔄 RESTAURAR VALORES ORIGINALES al terminar
         
         // 1. Restaurar velocidad original
-        if (carlos != null) {
-            carlos.setVelocidad(this.velocidadOriginal);
+    	if (targetCarlos != null) { 
+            targetCarlos.setVelocidad(this.velocidadOriginal);
         }
         
-        // 2. Efectos visuales de desactivación
         desactivarEfectoVisual();
-        
-        // 3. Mensaje de fin
         System.out.println("🎤 Autotune Plus terminado. Velocidad restaurada.");
         
         super.desactivarPowerUp(carlos);
