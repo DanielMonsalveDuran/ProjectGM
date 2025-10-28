@@ -90,6 +90,26 @@ public class Carlos {
         actualizarPowerUps();
     }
     
+    public boolean estaDerrotado() {
+        return autoestima <= 0;
+    }
+    
+    public void reiniciar() {
+        this.autoestima = 100;
+        this.ebriedad = 0;
+        this.estadoAnimo = "Negación";
+        this.deprimido = false;
+        this.autotuneActivo = false;
+        this.amnesiaActiva = false;
+        this.corazaActiva = false;
+        this.tiempoPowerUp = 0;
+        // Reiniciar posición si es necesario
+        if (area != null) {
+            area.x = 800 / 2 - 64 / 2;
+            area.y = 20;
+        }
+    }
+    
     public void dibujar(SpriteBatch batch) {
         if (!deprimido) {
             batch.draw(textura, area.x, area.y);

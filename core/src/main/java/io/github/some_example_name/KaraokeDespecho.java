@@ -25,6 +25,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	   private Carlos carlos;
 	   private LluviaRecuerdos lluviaRecuerdos;
 	   
+	   private PantallaGameOver pantallaGameOver;
+	   private boolean juegoActivo;
+	   
 	   private static final int TAMANIO_OBJETO = 64;
 	   
 	   
@@ -89,6 +92,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
         carlos.crear();
         lluviaRecuerdos.crear();
         
+        juegoActivo = true;
+        pantallaGameOver = new PantallaGameOver(this);
+        
         System.out.println("🎮 Juego iniciado correctamente");
     }
     
@@ -134,26 +140,66 @@ public class KaraokeDespecho extends ApplicationAdapter {
         }
     }
     
+    public void reiniciarJuego() {
+        // Opción simple: solo reiniciar el estado de los objetos existentes
+        carlos.reiniciar();
+        
+        // Limpiar la lluvia de objetos actual
+        lluviaRecuerdos.crear(); // Esto debería reiniciar el array de objetos
+        
+        juegoActivo = true;
+        System.out.println("🔄 Juego reiniciado - Autoestima: " + carlos.getAutoestima());
+    }
+    
     @Override
     public void render() {
+        // Verificar condición de derrota
+        if (carlos.estaDerrotado()) {
+            juegoActivo = false;
+        }
+        
+        // Si el juego no está activo, mostrar pantalla de Game Over
+        if (!juegoActivo) {
+            pantallaGameOver.render(Gdx.graphics.getDeltaTime());
+            return;
+        }
+        
+        // Limpiar pantalla
         ScreenUtils.clear(0.1f, 0.1f, 0.2f, 1);
         
+        // Actualizar cámara y batch
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+        
+        // Comenzar dibujado
         batch.begin();
         
+        // Dibujar HUD (Heads-Up Display)
         font.draw(batch, "Autoestima: " + carlos.getAutoestima(), 5, 475);
         font.draw(batch, "Ebriedad: " + carlos.getEbriedad(), 720, 475);
         font.draw(batch, "Estado: " + carlos.getEstadoAnimo(), 350, 475);
         
+        // Mostrar advertencia cuando la autoestima es crítica
+        if (carlos.getAutoestima() <= 30) {
+            font.draw(batch, "¡PELIGRO! Autoestima crítica", 300, 50);
+        }
+        
+        // Mostrar power-ups activos
+        if (carlos.getEbriedad() > 0) {
+            font.draw(batch, "🍺 Ebrio: " + (int)carlos.getEbriedad() + "%", 5, 450);
+        }
+        
+        // Actualizar y dibujar elementos del juego si Carlos no está deprimido
         if (!carlos.estaDeprimido()) {
             carlos.actualizarMovimiento();
             lluviaRecuerdos.actualizarMovimiento(carlos);
         }
         
+        // Dibujar personaje y lluvia de objetos
         carlos.dibujar(batch);
         lluviaRecuerdos.actualizarDibujoLluvia(batch);
         
+        // Finalizar dibujado
         batch.end();
     }
     
