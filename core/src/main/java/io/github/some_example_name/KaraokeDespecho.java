@@ -222,7 +222,7 @@ public class KaraokeDespecho extends ApplicationAdapter {
         
         // Actualizar y dibujar elementos del juego si Carlos no está deprimido
         if (!carlos.estaDeprimido()) {
-            carlos.actualizarMovimiento();
+            carlos.actualizar();
             lluviaRecuerdos.actualizarMovimiento(carlos);
         }
         

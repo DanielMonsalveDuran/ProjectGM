@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * REQUISITO GM1.4: Clase abstracta padre de múltiples power-ups
  * BUENAS PRÁCTICAS: Encapsulamiento, principio de abierto/cerrado, polimorfismo
  */
-public abstract class PowerUp extends ObjetoCaida implements AfectableEmocionalmente{
+public abstract class PowerUp extends ObjetoCaida{
     
     // ATRIBUTOS PROTEGIDOS (encapsulamiento para hijas)
     protected final float duracion;
@@ -99,7 +99,7 @@ public abstract class PowerUp extends ObjetoCaida implements AfectableEmocionalm
     
     @Override
     public void aplicarEfecto(Carlos carlos) {
-    	aplicarEfectoEmocional(carlos);
+    	aplicarEfectoPowerUp(carlos);
     }
     
     @Override
@@ -139,24 +139,4 @@ public abstract class PowerUp extends ObjetoCaida implements AfectableEmocionalm
         return String.format("%s: %s (%.1fs)", nombre, descripcion, duracion);
     }
     
-// ===== IMPLEMENTACIÓN DE LA INTERFAZ AFECTABLEEMOCIONALMENTE =====
-    
-    @Override
-    public void aplicarEfectoEmocional(Carlos carlos) {
-    	// 1. Aplicar efecto principal
-    	aplicarEfectoPowerUp(carlos);
-        
-        // 4. Log de activación (debug)
-        System.out.println("⚡ Power-up activado: " + nombre);
-    }
-    
-    @Override
-    public String getTipoEfecto() {
-        return "Power-up: " + getNombre();
-    }
-    
-    @Override
-    public boolean esPositivo() {
-        return true; // Todos los power-ups son positivos
-    }
 }

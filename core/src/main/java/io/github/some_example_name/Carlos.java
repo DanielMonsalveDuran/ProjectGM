@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Carlos {
+public class Carlos implements ElementoJuego{
     // ATRIBUTOS PRIVADOS (Encapsulamiento)
     private Rectangle area;
     private Texture textura;
@@ -67,38 +67,6 @@ public class Carlos {
         area.height = 64;
     }
     
-    public void actualizarMovimiento() {
-        // Movimiento base
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            area.x -= (velocidad - ebriedad) * Gdx.graphics.getDeltaTime();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            area.x += (velocidad - ebriedad) * Gdx.graphics.getDeltaTime();
-        }
-        
-        // Efectos de ebriedad
-        if (ebriedad > 30) {
-            area.x += MathUtils.random(-2, 2) * (ebriedad / 20);
-        }
-        
-        // Limites
-        if (area.x < 0) area.x = 0;
-        if (area.x > 800 - 64) area.x = 800 - 64;
-        
-        // ✅ MANTENIDO: Sistema de reducción de ebriedad
-        tiempoDesdeUltimaReduccion += Gdx.graphics.getDeltaTime();
-        
-        if (tiempoDesdeUltimaReduccion >= INTERVALO_REDUCCION) {
-            if (ebriedad > 0) {
-                ebriedad -= CANTIDAD_REDUCCION;
-                if (ebriedad < 0) ebriedad = 0;
-                System.out.println("🍺 Ebriedad reducida a: " + ebriedad);
-            }
-            tiempoDesdeUltimaReduccion = 0;
-        }
-        
-        actualizarPowerUps();
-    }
     
     public boolean estaDerrotado() {
         return autoestima <= 0;
@@ -121,16 +89,6 @@ public class Carlos {
         if (area != null) {
             area.x = 800 / 2 - 64 / 2;
             area.y = 20;
-        }
-    }
-    
-    public void dibujar(SpriteBatch batch) {
-        if (!deprimido) {
-            batch.draw(textura, area.x, area.y);
-        } else {
-            batch.draw(textura, area.x, area.y + MathUtils.random(-3, 3));
-            tiempoDeprimido--;
-            if (tiempoDeprimido <= 0) deprimido = false;
         }
     }
     
@@ -157,7 +115,6 @@ public class Carlos {
     }
     
     // GETTERS Y SETTERS (Control de acceso)
-    public Rectangle getArea() { return area; }
     public int getAutoestima() { return autoestima; }
     public int getEbriedad() { return ebriedad; }
     public int getScore() { return score; } // ✅ NUEVO GETTER
@@ -222,6 +179,73 @@ public class Carlos {
         recalcularMultiplicador();
         System.out.println("🛡️ Coraza activada: " + duracion + "s");
     }
+    
+// ✅ IMPLEMENTACIÓN DIRECTA DE LA INTERFAZ
+    
+    @Override
+    public void actualizar() {
+        // ✅ MOVER aquí la lógica de actualizarMovimiento()
+        actualizarMovimientoInterno();
+        actualizarPowerUps();
+    }
+    
+    @Override
+    public void dibujar(SpriteBatch batch) {
+        // ✅ MOVER aquí la lógica de dibujar()
+        if (!deprimido) {
+            batch.draw(textura, area.x, area.y);
+        } else {
+            batch.draw(textura, area.x, area.y + MathUtils.random(-3, 3));
+            tiempoDeprimido--;
+            if (tiempoDeprimido <= 0) deprimido = false;
+        }
+    }
+    
+    @Override
+    public Rectangle getArea() {
+        return area;
+    }
+    
+    @Override
+    public boolean estaFueraDePantalla() {
+        return false; // Carlos nunca sale de pantalla
+    }
+    
+    @Override
+    public String getTipoElemento() {
+        return "Carlos";
+    }
+    
+    // ✅ MÉTODO PRIVADO para la lógica interna de movimiento
+    private void actualizarMovimientoInterno() {
+        // Movimiento base
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            area.x -= (velocidad - ebriedad) * Gdx.graphics.getDeltaTime();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            area.x += (velocidad - ebriedad) * Gdx.graphics.getDeltaTime();
+        }
+        
+        // Efectos de ebriedad
+        if (ebriedad > 30) {
+            area.x += MathUtils.random(-2, 2) * (ebriedad / 20);
+        }
+        
+        // Limites
+        if (area.x < 0) area.x = 0;
+        if (area.x > 800 - 64) area.x = 800 - 64;
+        
+        // Sistema de reducción de ebriedad
+        tiempoDesdeUltimaReduccion += Gdx.graphics.getDeltaTime();
+        if (tiempoDesdeUltimaReduccion >= INTERVALO_REDUCCION) {
+            if (ebriedad > 0) {
+                ebriedad -= CANTIDAD_REDUCCION;
+                if (ebriedad < 0) ebriedad = 0;
+            }
+            tiempoDesdeUltimaReduccion = 0;
+        }
+    }
+    
     
     // MÉTODOS PRIVADOS (Encapsulamiento interno)
     private void actualizarPowerUps() {

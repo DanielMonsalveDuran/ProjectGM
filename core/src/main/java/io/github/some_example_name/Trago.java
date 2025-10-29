@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
  * Clase Trago - Implementa interfaz y extiende clase abstracta
  * REQUISITO GM1.4 y GM1.5
  */
-public class Trago extends ObjetoCaida implements AfectableEmocionalmente{
+public class Trago extends ObjetoCaida{
     private int potenciaAlcoholica;
     private int boostAutoestima;
     private int puntosScore;
@@ -21,24 +21,8 @@ public class Trago extends ObjetoCaida implements AfectableEmocionalmente{
     // Implementación del método abstracto de ObjetoCaida
     @Override
     public void aplicarEfecto(Carlos carlos) {
-        aplicarEfectoEmocional(carlos);
-    }
-    
-    // Implementación de la interfaz AfectableEmocionalmente
-    @Override
-    public void aplicarEfectoEmocional(Carlos carlos) {
-        carlos.aumentarEbriedad(potenciaAlcoholica);
+    	carlos.aumentarEbriedad(potenciaAlcoholica);
         carlos.sumarAutoestima(boostAutoestima);
         carlos.aumentarScore(puntosScore);
-    }
-    
-    @Override
-    public String getTipoEfecto() {
-        return "Consuelo Alcohólico";
-    }
-    
-    @Override
-    public boolean esPositivo() {
-        return true;
     }
 }

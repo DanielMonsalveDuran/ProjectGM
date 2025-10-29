@@ -2,7 +2,7 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class Recuerdo extends ObjetoCaida implements AfectableEmocionalmente {
+public class Recuerdo extends ObjetoCaida{
     private int danioEmocional;
     private String tipoRecuerdo;
     
@@ -14,13 +14,7 @@ public class Recuerdo extends ObjetoCaida implements AfectableEmocionalmente {
     
     @Override
     public void aplicarEfecto(Carlos carlos) {
-        aplicarEfectoEmocional(carlos);
-    }
-    
-    // Implementación EXPLÍCITA de la interfaz
-    @Override
-    public void aplicarEfectoEmocional(Carlos carlos) {
-        // 🛡️ NUEVA VERIFICACIÓN: Si la coraza está activa, el recuerdo no tiene efecto
+    	// 🛡️ NUEVA VERIFICACIÓN: Si la coraza está activa, el recuerdo no tiene efecto
         if (carlos.isCorazaActiva()) {
             System.out.println("🛡️ Recuerdo bloqueado por Coraza de Macho.");
             return; // Detener el efecto negativo
@@ -33,15 +27,5 @@ public class Recuerdo extends ObjetoCaida implements AfectableEmocionalmente {
             case "carta": carlos.sumarAutoestima(-25); break;
             case "mensaje": carlos.sumarAutoestima(-10); break;
         }
-    }
-    
-    @Override
-    public String getTipoEfecto() {
-        return "Dolor del Pasado - " + tipoRecuerdo;
-    }
-    
-    @Override
-    public boolean esPositivo() {
-        return false;
     }
 }
