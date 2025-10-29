@@ -46,24 +46,12 @@ public abstract class PowerUp extends ObjetoCaida implements AfectableEmocionalm
      */
     public abstract void aplicarEfectoPowerUp(Carlos carlos);
     
-    /**
-     * Efecto visual específico al ser activado
-     */
-    public abstract void activarEfectoVisual();
-    
-    /**
-     * Efecto visual específico al terminar
-     */
-    public abstract void desactivarEfectoVisual();
-    
-    // MÉTODOS CONCRETOS (comportamiento compartido)
-    
     
     /**
      * Método template - las hijas pueden overridear partes específicas
      */
     public void desactivarPowerUp(Carlos carlos) {
-        desactivarEfectoVisual();
+        //desactivarEfectoVisual();
         System.out.println("⚡ Power-up desactivado: " + nombre);
     }
     
@@ -157,12 +145,6 @@ public abstract class PowerUp extends ObjetoCaida implements AfectableEmocionalm
     public void aplicarEfectoEmocional(Carlos carlos) {
     	// 1. Aplicar efecto principal
     	aplicarEfectoPowerUp(carlos);
-        
-        // 2. Efecto visual
-        activarEfectoVisual();
-        
-        // 3. Bonus de autoestima base
-        carlos.sumarAutoestima(autoestimaBase);
         
         // 4. Log de activación (debug)
         System.out.println("⚡ Power-up activado: " + nombre);

@@ -37,17 +37,6 @@ public class PowerUpAmnesiaSelectiva extends PowerUp{
         System.out.println("🧠 Amnesia Selectiva: Score -" + scoreReduccion + 
                            ", Autoestima 100, Ebriedad -" + EBRIEDAD_REDUCCION);
     }
-
-    @Override
-    public void activarEfectoVisual() {
-        System.out.println("✨ Efecto visual de Amnesia Selectiva activado (niebla mental)");
-        spawnearParticulas("niebla_azul");
-    }
-
-    @Override
-    public void desactivarEfectoVisual() {
-        System.out.println("💫 Efecto visual de Amnesia Selectiva desactivado");
-    }
     
     // Sobreescritura de PowerUp para efectos instantáneos
     @Override

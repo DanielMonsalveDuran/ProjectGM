@@ -50,18 +50,6 @@ public class PowerUpAutotuneEmocional extends PowerUp {
     }
     
     @Override
-    public void activarEfectoVisual() {
-        System.out.println("💫 Efectos visuales de Autotune Plus activados");
-        // Aquí irían efectos de partículas, brillo, etc.
-    }
-    
-    @Override
-    public void desactivarEfectoVisual() {
-        System.out.println("💫 Efectos visuales de Autotune Plus desactivados");
-        // Restaurar efectos visuales normales
-    }
-    
-    @Override
     protected void actualizarDuracion() {
         // Lógica de autoestima gradual
         tiempoAcumulado += Gdx.graphics.getDeltaTime();
@@ -99,7 +87,7 @@ public class PowerUpAutotuneEmocional extends PowerUp {
             targetCarlos.setVelocidad(this.velocidadOriginal);
         }
         
-        desactivarEfectoVisual();
+        //desactivarEfectoVisual();
         System.out.println("🎤 Autotune Plus terminado. Velocidad restaurada.");
         
         super.desactivarPowerUp(carlos);

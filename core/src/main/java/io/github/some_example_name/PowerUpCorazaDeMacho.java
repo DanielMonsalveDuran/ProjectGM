@@ -46,23 +46,6 @@ public class PowerUpCorazaDeMacho extends PowerUp{
         System.out.println("🛡️ Coraza activada - Inmune a recuerdos por " + getDuracion() + "s");
     }
     
-    @Override
-    public void activarEfectoVisual() {
-        // Efectos visuales al activar la coraza
-        spawnearParticulas("escudo_dorado");
-        reproducirSonido("coraza_activada.wav");
-        
-        System.out.println("✨ Efecto visual: Escudo dorado alrededor de Carlos");
-    }
-    
-    @Override
-    public void desactivarEfectoVisual() {
-        // Efectos visuales al desactivarse
-        spawnearParticulas("escudo_desaparece");
-        reproducirSonido("coraza_desactivada.wav");
-        
-        System.out.println("💫 Efecto visual: Escudo desaparece");
-    }
     
     // ===== SOBREESCRITURA DE MÉTODOS DE POWERUP =====
     
@@ -80,7 +63,7 @@ public class PowerUpCorazaDeMacho extends PowerUp{
     
     @Override
     public void desactivarPowerUp(Carlos carlos) {
-        desactivarEfectoVisual();
+        //desactivarEfectoVisual();
         this.activa = false;
         this.tiempoRestante = 0;
         
@@ -115,7 +98,7 @@ public class PowerUpCorazaDeMacho extends PowerUp{
     private void desactivarPowerUpInterno() {
         this.activa = false;
         this.tiempoRestante = 0;
-        desactivarEfectoVisual();
+        //desactivarEfectoVisual();
         
         System.out.println("⏰ Coraza expirada - Protección terminada");
     }
