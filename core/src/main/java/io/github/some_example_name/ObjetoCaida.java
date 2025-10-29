@@ -32,7 +32,7 @@ public abstract class ObjetoCaida {
     
     // Método concreto compartido
     public boolean estaFueraDePantalla() {
-        return area.y + 64 < 0;
+        return area.y + 64 < 0;	
     }
     
     public Rectangle getArea() {

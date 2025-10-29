@@ -155,7 +155,7 @@ public class KaraokeDespecho extends ApplicationAdapter {
     public void render() {
         // Verificar condición de derrota
         if (carlos.estaDerrotado()) {
-        	if (juegoActivo) { // Solo si el juego estaba activo antes de la derrota
+            if (juegoActivo) { // Solo si el juego estaba activo antes de la derrota
                 pantallaGameOver.setScoreFinal(carlos.getScore()); 
             }
             juegoActivo = false;
@@ -177,19 +177,48 @@ public class KaraokeDespecho extends ApplicationAdapter {
         // Comenzar dibujado
         batch.begin();
         
-        // ✅ HUD ACTUALIZADO: Ebriedad izquierda, Score derecha
+        // ✅ HUD ACTUALIZADO: Autoestima, Ebriedad, Estado izquierda | Score derecha
         font.draw(batch, "Autoestima: " + carlos.getAutoestima(), 5, 475);
         font.draw(batch, "Ebrio: " + carlos.getEbriedad() + "%", 5, 450);
         font.draw(batch, "Estado: " + carlos.getEstadoAnimo(), 5, 425);
         
-        // ✅ NUEVO: Score arriba a la derecha
+        // ✅ Score arriba a la derecha
         font.draw(batch, "Score: " + carlos.getScore(), 650, 475);
         font.draw(batch, String.format("Multiplicador: %.1fx", carlos.getMultiplicadorScore()), 650, 450);
+        
+        // ✅ NUEVO: Mostrar power-ups activos con temporizadores
+        font.draw(batch, "Power-ups activos:", 5, 400);
+        
+        int yPos = 380;
+        
+        // Mostrar Coraza si está activa
+        if (carlos.isCorazaActiva()) {
+            String texto = String.format("🛡️ Coraza: %.1fs", carlos.getTiempoCoraza());
+            font.draw(batch, texto, 10, yPos);
+            yPos -= 20;
+        }
+        
+        // Mostrar Autotune si está activo  
+        if (carlos.isAutotuneActivo()) {
+            String texto = String.format("🎤 Autotune: %.1fs", carlos.getTiempoAutotune());
+            font.draw(batch, texto, 10, yPos);
+            yPos -= 20;
+        }
+        
+        // Mostrar Amnesia si está activa
+        if (carlos.isAmnesiaActiva()) {
+            String texto = String.format("🧠 Amnesia: %.1fs", carlos.getTiempoAmnesia());
+            font.draw(batch, texto, 10, yPos);
+            yPos -= 20;
+        }
         
         // Mostrar advertencia cuando la autoestima es crítica
         if (carlos.getAutoestima() <= 30) {
             font.draw(batch, "¡PELIGRO! Autoestima crítica", 300, 50);
         }
+        
+        // Finalizar dibujado del HUD
+        batch.end();
         
         // Actualizar y dibujar elementos del juego si Carlos no está deprimido
         if (!carlos.estaDeprimido()) {
@@ -198,10 +227,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
         }
         
         // Dibujar personaje y lluvia de objetos
+        batch.begin();
         carlos.dibujar(batch);
         lluviaRecuerdos.actualizarDibujoLluvia(batch);
-        
-        // Finalizar dibujado
         batch.end();
     }
     

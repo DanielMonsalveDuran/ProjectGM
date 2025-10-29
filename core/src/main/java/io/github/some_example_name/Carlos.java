@@ -22,11 +22,14 @@ public class Carlos {
     private int tiempoDeprimidoMax;
     private int tiempoDeprimido;
     
+    private float tiempoCoraza;
+    private float tiempoAutotune; 
+    private float tiempoAmnesia;
+    
     // Power-ups activos (privados)
     private boolean autotuneActivo;
     private boolean amnesiaActiva;
     private boolean corazaActiva;
-    private float tiempoPowerUp = 0;
     
     // ✅ SIMPLIFICADO: Multiplicador solo por power-ups
     private float multiplicadorScore;
@@ -49,7 +52,9 @@ public class Carlos {
         this.autotuneActivo = false;
         this.amnesiaActiva = false;
         this.corazaActiva = false;
-        this.tiempoPowerUp = 0;
+        this.tiempoCoraza = 0f;
+        this.tiempoAutotune = 0f;
+        this.tiempoAmnesia = 0f;
         this.multiplicadorScore = 1.0f; // ✅ Base 1.0x siempre
     }
     
@@ -108,7 +113,9 @@ public class Carlos {
         this.autotuneActivo = false;
         this.amnesiaActiva = false;
         this.corazaActiva = false;
-        this.tiempoPowerUp = 0;
+        this.tiempoCoraza = 0f;
+        this.tiempoAutotune = 0f;
+        this.tiempoAmnesia = 0f;
         this.multiplicadorScore = 1.0f; // ✅ Reiniciar a 1.0x
         
         if (area != null) {
@@ -184,38 +191,78 @@ public class Carlos {
 
     // 🟢 NUEVO GETTER: Para que Recuerdo pueda chequear la protección
     public boolean isCorazaActiva() {
-        return corazaActiva;
+        return tiempoCoraza > 0;
+    }
+    
+    public boolean isAutotuneActivo() {
+        return tiempoAutotune > 0;
+    }
+    
+    public boolean isAmnesiaActiva() {
+        return tiempoAmnesia > 0;
     }
     
     public void activarAutotune(float duracion) {
-        autotuneActivo = true;
-        tiempoPowerUp = duracion;
-        recalcularMultiplicador(); // ✅ Recalcular multiplicador
+        this.tiempoAutotune = duracion; // ✅ RESETEA tiempo (no acumula)
+        this.autotuneActivo = true;
+        recalcularMultiplicador();
+        System.out.println("🎤 Autotune activado: " + duracion + "s");
     }
     
     public void activarAmnesia(float duracion) {
-        amnesiaActiva = true;
-        tiempoPowerUp = duracion;
-        recalcularMultiplicador(); // ✅ Recalcular multiplicador
+        this.tiempoAmnesia = duracion; // ✅ RESETEA tiempo (no acumula)  
+        this.amnesiaActiva = true;
+        recalcularMultiplicador();
+        System.out.println("🧠 Amnesia activada: " + duracion + "s");
     }
     
     public void activarCoraza(float duracion) {
-        corazaActiva = true;
-        tiempoPowerUp = duracion;
-        recalcularMultiplicador(); // ✅ Recalcular multiplicador
+        this.tiempoCoraza = duracion; // ✅ RESETEA tiempo (no acumula)
+        this.corazaActiva = true;
+        recalcularMultiplicador();
+        System.out.println("🛡️ Coraza activada: " + duracion + "s");
     }
     
     // MÉTODOS PRIVADOS (Encapsulamiento interno)
     private void actualizarPowerUps() {
-        if (tiempoPowerUp > 0) {
-            tiempoPowerUp -= Gdx.graphics.getDeltaTime();
-            if (tiempoPowerUp <= 0) {
-                autotuneActivo = false;
-                amnesiaActiva = false;
+        boolean cambio = false;
+        
+        // Actualizar coraza
+        if (tiempoCoraza > 0) {
+            tiempoCoraza -= Gdx.graphics.getDeltaTime();
+            if (tiempoCoraza <= 0) {
+                tiempoCoraza = 0;
                 corazaActiva = false;
-                // ✅ Solo recalcular multiplicador basado en power-ups
-                recalcularMultiplicador();
+                System.out.println("⏰ Coraza expirada");
+                cambio = true;
             }
+        }
+        
+        // Actualizar autotune
+        if (tiempoAutotune > 0) {
+            tiempoAutotune -= Gdx.graphics.getDeltaTime();
+            if (tiempoAutotune <= 0) {
+                tiempoAutotune = 0;
+                autotuneActivo = false;
+                System.out.println("⏰ Autotune expirado");
+                cambio = true;
+            }
+        }
+        
+        // Actualizar amnesia
+        if (tiempoAmnesia > 0) {
+            tiempoAmnesia -= Gdx.graphics.getDeltaTime();
+            if (tiempoAmnesia <= 0) {
+                tiempoAmnesia = 0;
+                amnesiaActiva = false;
+                System.out.println("⏰ Amnesia expirada");
+                cambio = true;
+            }
+        }
+        
+        // Recalcular solo si hubo cambio
+        if (cambio) {
+            recalcularMultiplicador();
         }
     }
     
@@ -248,5 +295,17 @@ public class Carlos {
     }
     public void setVelocidad(int velocidad) {
     	this.velocidad = velocidad;
+    }
+    
+    public float getTiempoCoraza() {
+        return tiempoCoraza;
+    }
+    
+    public float getTiempoAutotune() {
+        return tiempoAutotune;
+    }
+    
+    public float getTiempoAmnesia() {
+        return tiempoAmnesia;
     }
 }
