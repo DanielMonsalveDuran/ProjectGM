@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * REQUISITO GM1.4: Clase abstracta padre de múltiples power-ups
  * BUENAS PRÁCTICAS: Encapsulamiento, principio de abierto/cerrado, polimorfismo
  */
-public abstract class PowerUp extends ObjetoCaida {
+public abstract class PowerUp extends ObjetoCaida implements AfectableEmocionalmente{
     
     // ATRIBUTOS PROTEGIDOS (encapsulamiento para hijas)
     protected final float duracion;
@@ -58,23 +58,6 @@ public abstract class PowerUp extends ObjetoCaida {
     
     // MÉTODOS CONCRETOS (comportamiento compartido)
     
-    /**
-     * Método final - no puede ser overrideado
-     * Coordina la secuencia completa de activación
-     */
-    public final void activarPowerUp(Carlos carlos) {
-        // 1. Aplicar efecto principal
-    	aplicarEfectoPowerUp(carlos);
-        
-        // 2. Efecto visual
-        activarEfectoVisual();
-        
-        // 3. Bonus de autoestima base
-        carlos.sumarAutoestima(autoestimaBase);
-        
-        // 4. Log de activación (debug)
-        System.out.println("⚡ Power-up activado: " + nombre);
-    }
     
     /**
      * Método template - las hijas pueden overridear partes específicas
@@ -128,8 +111,7 @@ public abstract class PowerUp extends ObjetoCaida {
     
     @Override
     public void aplicarEfecto(Carlos carlos) {
-        // Delega al método específico del power-up
-    	this.activarPowerUp(carlos);
+    	aplicarEfectoEmocional(carlos);
     }
     
     @Override
@@ -167,5 +149,32 @@ public abstract class PowerUp extends ObjetoCaida {
      */
     public String getInfoDetallada() {
         return String.format("%s: %s (%.1fs)", nombre, descripcion, duracion);
+    }
+    
+// ===== IMPLEMENTACIÓN DE LA INTERFAZ AFECTABLEEMOCIONALMENTE =====
+    
+    @Override
+    public void aplicarEfectoEmocional(Carlos carlos) {
+    	// 1. Aplicar efecto principal
+    	aplicarEfectoPowerUp(carlos);
+        
+        // 2. Efecto visual
+        activarEfectoVisual();
+        
+        // 3. Bonus de autoestima base
+        carlos.sumarAutoestima(autoestimaBase);
+        
+        // 4. Log de activación (debug)
+        System.out.println("⚡ Power-up activado: " + nombre);
+    }
+    
+    @Override
+    public String getTipoEfecto() {
+        return "Power-up: " + getNombre();
+    }
+    
+    @Override
+    public boolean esPositivo() {
+        return true; // Todos los power-ups son positivos
     }
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
  * Power-up Amnesia Selectiva - Efecto instantáneo
  * Extiende de PowerUp e implementa la interfaz AfectableEmocionalmente.
  */
-public class PowerUpAmnesiaSelectiva extends PowerUp implements AfectableEmocionalmente {
+public class PowerUpAmnesiaSelectiva extends PowerUp{
 
     private static final float SCORE_REDUCCION_PORCENTAJE = 0.05f; // 5%
     private static final int EBRIEDAD_REDUCCION = 10;
@@ -47,22 +47,6 @@ public class PowerUpAmnesiaSelectiva extends PowerUp implements AfectableEmocion
     @Override
     public void desactivarEfectoVisual() {
         System.out.println("💫 Efecto visual de Amnesia Selectiva desactivado");
-    }
-    
-    // Implementación de AfectableEmocionalmente
-    @Override
-    public void aplicarEfectoEmocional(Carlos carlos) {
-        aplicarEfectoPowerUp(carlos);
-    }
-    
-    @Override
-    public String getTipoEfecto() {
-        return "Borrado Mental";
-    }
-    
-    @Override
-    public boolean esPositivo() {
-        return true; 
     }
     
     // Sobreescritura de PowerUp para efectos instantáneos

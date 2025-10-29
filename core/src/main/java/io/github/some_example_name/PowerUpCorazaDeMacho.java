@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
  * PowerUpCoraza - Protección emocional temporal
  * Carlos se vuelve inmune a los efectos negativos de los recuerdos por un tiempo
  */
-public class PowerUpCorazaDeMacho extends PowerUp implements AfectableEmocionalmente {
+public class PowerUpCorazaDeMacho extends PowerUp{
     
     // CONSTANTES ESPECÍFICAS DE CORAZA
     private static final float DURACION_CORAZA = 5f; // 5 segundos de protección
@@ -62,24 +62,6 @@ public class PowerUpCorazaDeMacho extends PowerUp implements AfectableEmocionalm
         reproducirSonido("coraza_desactivada.wav");
         
         System.out.println("💫 Efecto visual: Escudo desaparece");
-    }
-    
-    // ===== IMPLEMENTACIÓN DE LA INTERFAZ AFECTABLEEMOCIONALMENTE =====
-    
-    @Override
-    public void aplicarEfectoEmocional(Carlos carlos) {
-        // Cuando Carlos colisiona con este power-up
-        aplicarEfectoPowerUp(carlos);
-    }
-    
-    @Override
-    public String getTipoEfecto() {
-        return "Protección Emocional";
-    }
-    
-    @Override
-    public boolean esPositivo() {
-        return true; // Siempre es positivo
     }
     
     // ===== SOBREESCRITURA DE MÉTODOS DE POWERUP =====
