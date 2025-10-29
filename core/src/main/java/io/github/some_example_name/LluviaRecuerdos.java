@@ -60,23 +60,19 @@ public class LluviaRecuerdos {
             // 60% probabilidad - Tragos
             nuevoObjeto = new Trago(tragoTexture, x, y);
         } else if (tipo <= 9) {
-            // 30% probabilidad - Recuerdos
+            // 30% probabilidad - Recuerdos (Instanciar subclases)
             int tipoRecuerdo = MathUtils.random(0, 2);
-            String tipoString;
-            Texture texturaRecuerdo;
             
             if (tipoRecuerdo == 0) {
-                tipoString = "foto";
-                texturaRecuerdo = recuerdoFotoTexture;
+                // Foto: Ira
+                nuevoObjeto = new RecuerdoFoto(recuerdoFotoTexture, x, y);
             } else if (tipoRecuerdo == 1) {
-                tipoString = "carta";
-                texturaRecuerdo = recuerdoCartaTexture;
+                // Carta: Depresión
+                nuevoObjeto = new RecuerdoCarta(recuerdoCartaTexture, x, y);
             } else {
-                tipoString = "mensaje";
-                texturaRecuerdo = recuerdoMensajeTexture;
+                // Mensaje: Negociación
+                nuevoObjeto = new RecuerdoMensaje(recuerdoMensajeTexture, x, y);
             }
-            
-            nuevoObjeto = new Recuerdo(texturaRecuerdo, x, y, tipoString);
         } else {
             // 10% probabilidad - Power-ups
             int tipoPowerUp = MathUtils.random(0, 2);

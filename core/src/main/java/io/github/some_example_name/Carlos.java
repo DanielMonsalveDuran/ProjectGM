@@ -38,6 +38,11 @@ public class Carlos implements ElementoJuego{
     private static final int CANTIDAD_REDUCCION = 1;
     private float tiempoDesdeUltimaReduccion = 0f;
     
+    // 🟢 NUEVO: Atributos para el estado temporal de Recuerdo
+    private float tiempoEstadoTemporal;
+    private String estadoAnimoTemporal;
+    private boolean estadoTemporalActivo;
+    
     public Carlos(Texture tex, Sound ss) {
         this.textura = tex;
         this.sonidoLlanto = ss;
@@ -56,6 +61,11 @@ public class Carlos implements ElementoJuego{
         this.tiempoAutotune = 0f;
         this.tiempoAmnesia = 0f;
         this.multiplicadorScore = 1.0f; // ✅ Base 1.0x siempre
+        
+        // 🟢 Inicializar nuevo estado temporal
+        this.tiempoEstadoTemporal = 0f;
+        this.estadoAnimoTemporal = "Negación";
+        this.estadoTemporalActivo = false;
     }
     
     // MÉTODOS PÚBLICOS (Interfaz controlada)
@@ -86,6 +96,11 @@ public class Carlos implements ElementoJuego{
         this.tiempoAmnesia = 0f;
         this.multiplicadorScore = 1.0f; // ✅ Reiniciar a 1.0x
         
+        // 🟢 Reiniciar estado temporal
+        this.tiempoEstadoTemporal = 0f;
+        this.estadoAnimoTemporal = "Negación";
+        this.estadoTemporalActivo = false;
+        
         if (area != null) {
             area.x = 800 / 2 - 64 / 2;
             area.y = 20;
@@ -94,7 +109,8 @@ public class Carlos implements ElementoJuego{
     
     public void deprimir() {
         if (!corazaActiva) {
-            autoestima -= 20;
+            // Nota: Se elimina la lógica de reducción de autoestima aquí, 
+            // ya que se delega a las clases Recuerdo hijas.
             deprimido = true;
             tiempoDeprimido = tiempoDeprimidoMax;
             
@@ -103,7 +119,18 @@ public class Carlos implements ElementoJuego{
                 sonidoLlanto.play();
             }
             
-            actualizarEstadoAnimo();
+            // ❌ Ya no se llama a actualizarEstadoAnimo() aquí, se llama en actualizar()
+        }
+    }
+    
+    // 🟢 NUEVO: Método para setear un estado de ánimo temporal
+    public void setEstadoTemporal(String estado, float duracion) {
+        if (!corazaActiva) {
+            this.estadoAnimoTemporal = estado;
+            this.tiempoEstadoTemporal = duracion;
+            this.estadoTemporalActivo = true;
+            this.estadoAnimo = estado; // Actualizar de inmediato para el HUD
+            System.out.println("💔 Estado Temporal Activado: " + estado + " por " + duracion + "s");
         }
     }
     
@@ -118,12 +145,22 @@ public class Carlos implements ElementoJuego{
     public int getAutoestima() { return autoestima; }
     public int getEbriedad() { return ebriedad; }
     public int getScore() { return score; } // ✅ NUEVO GETTER
-    public String getEstadoAnimo() { return estadoAnimo; }
+    
+    // 🟢 Modificado: Retorna el estado temporal si está activo
+    public String getEstadoAnimo() { 
+        if (estadoTemporalActivo) {
+            return estadoAnimoTemporal;
+        }
+        return estadoAnimo; 
+    }
+    
     public boolean estaDeprimido() { return deprimido; }
     public float getMultiplicadorScore() { return multiplicadorScore; } // ✅ NUEVO GETTER
     
     public void sumarAutoestima(int puntos) { 
         autoestima = Math.min(100, autoestima + puntos);
+        autoestima = Math.max(0, autoestima); // Asegurar que no sea negativo
+        actualizarEstadoAnimo(); // ✅ Actualizar estado base
     }
     
     public void aumentarEbriedad(int nivel) { 
@@ -180,6 +217,18 @@ public class Carlos implements ElementoJuego{
         System.out.println("🛡️ Coraza activada: " + duracion + "s");
     }
     
+    public float getTiempoCoraza() {
+        return tiempoCoraza;
+    }
+    
+    public float getTiempoAutotune() {
+        return tiempoAutotune;
+    }
+    
+    public float getTiempoAmnesia() {
+        return tiempoAmnesia;
+    }
+    
 // ✅ IMPLEMENTACIÓN DIRECTA DE LA INTERFAZ
     
     @Override
@@ -187,6 +236,8 @@ public class Carlos implements ElementoJuego{
         // ✅ MOVER aquí la lógica de actualizarMovimiento()
         actualizarMovimientoInterno();
         actualizarPowerUps();
+        // 🟢 NUEVO: Actualizar el temporizador del estado de ánimo temporal
+        actualizarEstadoTemporal();
     }
     
     @Override
@@ -290,14 +341,30 @@ public class Carlos implements ElementoJuego{
         }
     }
     
+    // 🟢 NUEVO: Manejar el temporizador del estado de ánimo temporal
+    private void actualizarEstadoTemporal() {
+        if (estadoTemporalActivo) {
+            tiempoEstadoTemporal -= Gdx.graphics.getDeltaTime();
+            
+            if (tiempoEstadoTemporal <= 0) {
+                tiempoEstadoTemporal = 0;
+                estadoTemporalActivo = false;
+                System.out.println("⏰ Estado Temporal Expirado. Revirtiendo a estado base.");
+                actualizarEstadoAnimo(); // Revertir al estado base
+            }
+        }
+    }
+    
     private void actualizarEstadoAnimo() {
-        // ✅ ESTE MÉTODO SE MANTIENE para el estado emocional visual
-        // pero ya NO afecta el multiplicador de score
+        // ✅ SOLO aplicar estado base si NO hay estado temporal activo
+        if (estadoTemporalActivo) return; 
         
-        if (autoestima >= 80) estadoAnimo = "Negación";
-        else if (autoestima >= 60) estadoAnimo = "Ira";
-        else if (autoestima >= 30) estadoAnimo = "Depresión";
-        else estadoAnimo = "Aceptación";
+        // 🟢 Lógica de estado base simplificada, como pide el usuario
+        if (autoestima > 30) {
+            estadoAnimo = "Negación";
+        } else {
+            estadoAnimo = "Aceptación";
+        }
     }
     
     // ✅ NUEVO: Recalcular multiplicador solo basado en power-ups
@@ -320,16 +387,5 @@ public class Carlos implements ElementoJuego{
     public void setVelocidad(int velocidad) {
     	this.velocidad = velocidad;
     }
-    
-    public float getTiempoCoraza() {
-        return tiempoCoraza;
-    }
-    
-    public float getTiempoAutotune() {
-        return tiempoAutotune;
-    }
-    
-    public float getTiempoAmnesia() {
-        return tiempoAmnesia;
-    }
 }
+
