@@ -1,33 +1,44 @@
-# Project GM
+# Guía Extendida: Descarga y Ejecución de ProjectGM (LibGDX/Gradle)
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+Este documento describe el proceso para importar, configurar y ejecutar el proyecto ProjectGM, que utiliza la estructura estándar de LibGDX y el sistema de construcción Gradle.
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+## PLATAFORMAS Y MÓDULOS
+- core: Módulo principal con la lógica de la aplicación.
+- lwjgl3: Módulo de plataforma de escritorio (Desktop Launcher).
 
-## Platforms
+## PASO 1: REQUISITOS PREVIOS
+1. **Java JDK:** Asegúrese de tener instalado el Java Development Kit (JDK), versión 8 o superior.
+2. **Eclipse IDE:** Utilice Eclipse con el plugin Buildship (Gradle Integration) instalado y activo.
+3. **Descarga:** Descargue el proyecto ProjectGM desde GitHub (clonando el repositorio o bajando el ZIP).
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+## PASO 2: IMPORTACIÓN EN ECLIPSE 
+El método más sencillo es usar la herramienta de importación de Gradle de Eclipse:
 
-## Gradle
+1.  Abra Eclipse.
+2.  Vaya a **File** (Archivo) > **Import...** (Importar...).
+3.  Expanda la carpeta **Gradle** y seleccione **Existing Gradle Project** (Proyecto Gradle Existente).
+4.  Haga clic en **Next**.
+5.  En "Project root directory", haga clic en **Browse...** y seleccione la **carpeta principal** de ProjectGM (la que contiene 'build.gradle').
+6.  Haga clic en **Finish**.
+    * **NOTA:** Gradle resolverá las dependencias (LibGDX, LWJGL3, etc.). Este proceso puede tardar unos minutos la primera vez.
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+## PASO 3: EJECUCIÓN DEL PROYECTO
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+### Opción A: Ejecución desde Eclipse (Recomendada)
+Para ejecutar la aplicación de escritorio:
+1.  En el **Package Explorer**, navegue al proyecto **lwjgl3**.
+2.  Busque la clase principal de inicio (generalmente **Lwjgl3Launcher.java** o similar).
+3.  Haga clic derecho sobre la clase y seleccione **Run As** (Ejecutar como) > **Java Application** (Aplicación Java).
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+### Opción B: Ejecución Directa con el Wrapper de Gradle
+Desde la terminal o CMD, navegue a la carpeta raíz del proyecto y use el comando de ejecución:
+- **Comando:** ./gradlew lwjgl3:run
+
+## COMANDOS DE GRADLE ÚTILES
+Estos comandos se ejecutan desde la terminal en la carpeta raíz del proyecto.
+- `cleanEclipse`: remueve los archivos de configuración de Eclipse.
+- `eclipse`: genera los archivos de configuración de Eclipse.
+- `build`: construye todas las fuentes y archivos del proyecto.
+- `clean`: elimina las carpetas 'build' (clases compiladas y archivos).
+- `lwjgl3:jar`: construye el archivo .jar ejecutable (encontrado en 'lwjgl3/build/libs').
+- `lwjgl3:run`: inicia la aplicación de escritorio.
