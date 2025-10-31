@@ -8,5 +8,4 @@ public interface ElementoJuego {
     void dibujar(SpriteBatch batch);
     Rectangle getArea();
     boolean estaFueraDePantalla();
-    String getTipoElemento();
 }

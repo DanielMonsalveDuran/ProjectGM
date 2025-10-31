@@ -253,11 +253,6 @@ public class Carlos implements ElementoJuego{
         return false; // Carlos nunca sale de pantalla
     }
     
-    @Override
-    public String getTipoElemento() {
-        return "Carlos";
-    }
-    
     // ✅ MÉTODO PRIVADO para la lógica interna de movimiento
     private void actualizarMovimientoInterno() {
         // Movimiento base

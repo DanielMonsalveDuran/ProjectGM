@@ -20,11 +20,6 @@ public abstract class ObjetoCaida implements ElementoJuego{
         this.velocidadCaida = 200f;
     }
     
-    @Override
-    public String getTipoElemento() {
-        return "ObjetoCaida";
-    }
-    
     // Método concreto compartido
     @Override
     public void actualizar() {
