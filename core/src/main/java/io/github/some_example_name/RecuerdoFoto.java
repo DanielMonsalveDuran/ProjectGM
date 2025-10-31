@@ -18,4 +18,8 @@ public class RecuerdoFoto extends Recuerdo{
         // 💔 Estado Temporal: IRA
         carlos.setEstadoTemporal("Ira", DURACION_ESTADO_TEMPORAL);
     }
+    
+    public static int getDanioAutoestima() {
+        return DANIO_AUTOESTIMA;
+    }
 }

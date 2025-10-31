@@ -139,4 +139,25 @@ public abstract class PowerUp extends ObjetoCaida{
         return String.format("%s: %s (%.1fs)", nombre, descripcion, duracion);
     }
     
+    
+    public float getVelocidadCaida() { 
+        return velocidadCaida; 
+    }
+    
+    public void setVelocidadCaida(float velocidad) { 
+        this.velocidadCaida = velocidad; 
+    }
+    
+    public Texture getTextura() {
+        return textura;
+    }
+    
+    public void setTextura(Texture textura) {
+        this.textura = textura;
+    }
+    
+    public static float getDuracionBase() {
+        return DURACION_BASE;
+    }
+    
 }

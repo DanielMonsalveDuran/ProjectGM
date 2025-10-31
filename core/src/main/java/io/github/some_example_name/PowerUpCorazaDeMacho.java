@@ -115,11 +115,29 @@ public class PowerUpCorazaDeMacho extends PowerUp{
     public String getInfoDetallada() {
         String estado = estaActiva() ? 
             String.format("ACTIVA (%.1fs restantes)", tiempoRestante) : "INACTIVA";
-        
-        // ✅ CORREGIDO: Usar getters en lugar de acceder directamente
         return String.format("%s: %s - %s", 
-                           getNombre(),        // ✅ usar getter
-                           getDescripcion(),   // ✅ usar getter
+                           getNombre(),        
+                           getDescripcion(),   
                            estado);
+    }
+    
+    public void setActiva(boolean activa) { 
+        this.activa = activa; 
+    }
+    
+    public void setTiempoRestante(float tiempo) { 
+        this.tiempoRestante = tiempo; 
+    }
+    
+    public static float getDuracionCoraza() {
+        return DURACION_CORAZA;
+    }
+    
+    public static int getBonusAutoestima() {
+        return BONUS_AUTOESTIMA;
+    }
+    
+    public static int getPuntosScore() {
+        return PUNTOS_SCORE;
     }
 }

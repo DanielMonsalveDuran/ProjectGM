@@ -387,5 +387,78 @@ public class Carlos implements ElementoJuego{
     public void setVelocidad(int velocidad) {
     	this.velocidad = velocidad;
     }
+    
+    public void setAutoestima(int autoestima) { 
+        this.autoestima = Math.min(100, Math.max(0, autoestima));
+        actualizarEstadoAnimo();
+    }
+    
+    public void setEbriedad(int ebriedad) { 
+        this.ebriedad = Math.min(100, Math.max(0, ebriedad));
+    }
+    
+    public void setScore(int score) { 
+        this.score = Math.max(0, score); 
+    }
+    
+    public void setEstadoAnimo(String estadoAnimo) { 
+        this.estadoAnimo = estadoAnimo; 
+    }
+    
+    public void setEstadoTemporalActivo(boolean activo) { 
+        this.estadoTemporalActivo = activo; 
+    }
+    
+    public void setTiempoEstadoTemporal(float tiempo) { 
+        this.tiempoEstadoTemporal = tiempo; 
+    }
+    
+    public void setEstadoAnimoTemporal(String estado) {
+        this.estadoAnimoTemporal = estado;
+    }
+    
+    public void setTiempoCoraza(float tiempo) { 
+        this.tiempoCoraza = tiempo; 
+        this.corazaActiva = tiempo > 0;
+        recalcularMultiplicador();
+    }
+    
+    public void setTiempoAutotune(float tiempo) { 
+        this.tiempoAutotune = tiempo; 
+        this.autotuneActivo = tiempo > 0;
+        recalcularMultiplicador();
+    }
+    
+    public void setTiempoAmnesia(float tiempo) { 
+        this.tiempoAmnesia = tiempo; 
+        this.amnesiaActiva = tiempo > 0;
+        recalcularMultiplicador();
+    }
+    
+    public void setMultiplicadorScore(float multiplicador) { 
+        this.multiplicadorScore = Math.max(1.0f, multiplicador); 
+    }
+    
+    public void setDeprimido(boolean deprimido) {
+        this.deprimido = deprimido;
+        if (!deprimido) this.tiempoDeprimido = 0;
+    }
+    
+    public void setTiempoDeprimido(int tiempo) {
+        this.tiempoDeprimido = tiempo;
+        this.deprimido = tiempo > 0;
+    }
+    
+    public void setTiempoDeprimidoMax(int tiempo) {
+        this.tiempoDeprimidoMax = tiempo;
+    }
+    
+    public boolean isEstadoTemporalActivo() { return estadoTemporalActivo; }
+    public float getTiempoEstadoTemporal() { return tiempoEstadoTemporal; }
+    public String getEstadoAnimoTemporal() { return estadoAnimoTemporal; }
+    public int getTiempoDeprimido() { return tiempoDeprimido; }
+    public int getTiempoDeprimidoMax() { return tiempoDeprimidoMax; }
+    public Texture getTextura() { return textura; }
+    public Sound getSonidoLlanto() { return sonidoLlanto; }
 }
 

@@ -36,4 +36,16 @@ public abstract class Recuerdo extends ObjetoCaida{
     
     // 🟢 NUEVO: Método abstracto para que las hijas definan su estado de ánimo
     protected abstract void aplicarEstadoTemporal(Carlos carlos);
+    
+    public int getDanioEmocional() { 
+        return danioEmocional; 
+    }
+    
+    public void setDanioEmocional(int danio) { 
+        this.danioEmocional = danio; 
+    }
+    
+    public static float getDuracionEstadoTemporal() {
+        return DURACION_ESTADO_TEMPORAL;
+    }
 }

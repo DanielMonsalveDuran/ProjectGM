@@ -18,4 +18,8 @@ public class RecuerdoCarta extends Recuerdo{
         // 💔 Estado Temporal: DEPRESIÓN
         carlos.setEstadoTemporal("Depresión", DURACION_ESTADO_TEMPORAL);
     }
+    
+    public static int getDanioAutoestima() {
+        return DANIO_AUTOESTIMA;
+    }
 }

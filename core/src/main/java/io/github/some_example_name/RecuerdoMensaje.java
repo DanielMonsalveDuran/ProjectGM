@@ -18,4 +18,8 @@ public class RecuerdoMensaje extends Recuerdo{
         // 💔 Estado Temporal: NEGOCIACIÓN
         carlos.setEstadoTemporal("Negociación", DURACION_ESTADO_TEMPORAL);
     }
+    
+    public static int getDanioAutoestima() {
+        return DANIO_AUTOESTIMA;
+    }
 }

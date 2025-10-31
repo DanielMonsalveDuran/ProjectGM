@@ -240,5 +240,41 @@ public class KaraokeDespecho extends ApplicationAdapter {
         batch.dispose();
         font.dispose();
     }
+    
+    public Carlos getCarlos() {
+        return carlos;
+    }
+    
+    public LluviaRecuerdos getLluviaRecuerdos() {
+        return lluviaRecuerdos;
+    }
+    
+    public boolean isJuegoActivo() {
+        return juegoActivo;
+    }
+    
+    public void setJuegoActivo(boolean activo) {
+        this.juegoActivo = activo;
+    }
+    
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+    
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+    
+    public BitmapFont getFont() {
+        return font;
+    }
+    
+    public PantallaGameOver getPantallaGameOver() {
+        return pantallaGameOver;
+    }
+    
+    public static int getTamanioObjeto() {
+        return TAMANIO_OBJETO;
+    }
 }
 

@@ -46,4 +46,12 @@ public class PowerUpAmnesiaSelectiva extends PowerUp{
     public void desactivarPowerUp(Carlos carlos) {
         // No hace nada porque es instantáneo
     }
+    
+    public static float getScoreReduccionPorcentaje() {
+        return SCORE_REDUCCION_PORCENTAJE;
+    }
+    
+    public static int getEbriedadReduccion() {
+        return EBRIEDAD_REDUCCION;
+    }
 }

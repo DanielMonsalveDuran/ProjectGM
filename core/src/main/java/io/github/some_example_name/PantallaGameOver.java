@@ -90,4 +90,24 @@ public class PantallaGameOver implements Screen {
         font.dispose();
         fontTitulo.dispose();
     }
+    
+    public int getScoreFinal() {
+        return scoreFinal;
+    }
+    
+    public KaraokeDespecho getJuego() {
+        return juego;
+    }
+    
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+    
+    public BitmapFont getFont() {
+        return font;
+    }
+    
+    public BitmapFont getFontTitulo() {
+        return fontTitulo;
+    }
 }

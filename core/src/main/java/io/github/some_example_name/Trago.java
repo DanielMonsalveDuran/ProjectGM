@@ -25,4 +25,11 @@ public class Trago extends ObjetoCaida{
         carlos.sumarAutoestima(boostAutoestima);
         carlos.aumentarScore(puntosScore);
     }
+    
+    public int getPotenciaAlcoholica() { return potenciaAlcoholica; }
+    public void setPotenciaAlcoholica(int potencia) { this.potenciaAlcoholica = potencia; }
+    public int getBoostAutoestima() { return boostAutoestima; }
+    public void setBoostAutoestima(int boost) { this.boostAutoestima = boost; }
+    public int getPuntosScore() { return puntosScore; }
+    public void setPuntosScore(int puntos) { this.puntosScore = puntos; }
 }

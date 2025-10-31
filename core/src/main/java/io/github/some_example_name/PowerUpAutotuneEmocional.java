@@ -114,4 +114,32 @@ public class PowerUpAutotuneEmocional extends PowerUp {
         return String.format("AutotunePlus{duracion=%.1f, intervalo=%.1f, bonus=%d}", 
                            duracion, INTERVALO_AUTOESTIMA, autoestimaBase);
     }
+    
+    public float getTiempoAcumulado() { 
+        return tiempoAcumulado; 
+    }
+    
+    public void setTiempoAcumulado(float tiempo) { 
+        this.tiempoAcumulado = tiempo; 
+    }
+    
+    public int getVelocidadOriginal() { 
+        return velocidadOriginal; 
+    }
+    
+    public void setVelocidadOriginal(int velocidad) { 
+        this.velocidadOriginal = velocidad; 
+    }
+    
+    public Carlos getTargetCarlos() {
+        return targetCarlos;
+    }
+    
+    public void setTargetCarlos(Carlos carlos) {
+        this.targetCarlos = carlos;
+    }
+    
+    public static float getIntervaloAutoestima() {
+        return INTERVALO_AUTOESTIMA;
+    }
 }

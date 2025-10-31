@@ -50,4 +50,52 @@ public abstract class ObjetoCaida implements ElementoJuego{
     
     // Método abstracto que las subclases deben implementar
     public abstract void aplicarEfecto(Carlos carlos);
+    
+    public float getVelocidadCaida() { 
+        return velocidadCaida; 
+    }
+    
+    public void setVelocidadCaida(float velocidad) { 
+        this.velocidadCaida = velocidad; 
+    }
+    
+    public Texture getTextura() {
+        return textura;
+    }
+    
+    public void setTextura(Texture textura) {
+        this.textura = textura;
+    }
+    
+    public float getX() {
+        return area.x;
+    }
+    
+    public void setX(float x) {
+        this.area.x = x;
+    }
+    
+    public float getY() {
+        return area.y;
+    }
+    
+    public void setY(float y) {
+        this.area.y = y;
+    }
+    
+    public float getWidth() {
+        return area.width;
+    }
+    
+    public void setWidth(float width) {
+        this.area.width = width;
+    }
+    
+    public float getHeight() {
+        return area.height;
+    }
+    
+    public void setHeight(float height) {
+        this.area.height = height;
+    }
 }

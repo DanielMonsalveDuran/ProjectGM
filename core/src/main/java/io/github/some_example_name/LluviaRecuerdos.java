@@ -142,4 +142,92 @@ public class LluviaRecuerdos {
         powerupAmnesiaTexture.dispose();
         powerupCorazaTexture.dispose();
     }
+    
+    public Array<ObjetoCaida> getObjetosCaida() { 
+        return objetosCaida; 
+    }
+    
+    public void setObjetosCaida(Array<ObjetoCaida> objetos) { 
+        this.objetosCaida = objetos; 
+    }
+    
+    public long getUltimoObjetoTiempo() { 
+        return ultimoObjetoTiempo; 
+    }
+    
+    public void setUltimoObjetoTiempo(long tiempo) { 
+        this.ultimoObjetoTiempo = tiempo; 
+    }
+    
+    public Texture getTragoTexture() { 
+        return tragoTexture; 
+    }
+    
+    public Texture getRecuerdoFotoTexture() { 
+        return recuerdoFotoTexture; 
+    }
+    
+    public Texture getRecuerdoCartaTexture() { 
+        return recuerdoCartaTexture; 
+    }
+    
+    public Texture getRecuerdoMensajeTexture() { 
+        return recuerdoMensajeTexture; 
+    }
+    
+    public Texture getPowerupAutotuneTexture() { 
+        return powerupAutotuneTexture; 
+    }
+    
+    public Texture getPowerupAmnesiaTexture() { 
+        return powerupAmnesiaTexture; 
+    }
+    
+    public Texture getPowerupCorazaTexture() { 
+        return powerupCorazaTexture; 
+    }
+    
+    public Sound getTragoSound() { 
+        return tragoSound; 
+    }
+    
+    public Music getMusicaKaraoke() { 
+        return musicaKaraoke; 
+    }
+    
+    public void setTragoTexture(Texture texture) { 
+        this.tragoTexture = texture; 
+    }
+    
+    public void setRecuerdoFotoTexture(Texture texture) { 
+        this.recuerdoFotoTexture = texture; 
+    }
+    
+    public void setRecuerdoCartaTexture(Texture texture) { 
+        this.recuerdoCartaTexture = texture; 
+    }
+    
+    public void setRecuerdoMensajeTexture(Texture texture) { 
+        this.recuerdoMensajeTexture = texture; 
+    }
+    
+    public void setPowerupAutotuneTexture(Texture texture) { 
+        this.powerupAutotuneTexture = texture; 
+    }
+    
+    public void setPowerupAmnesiaTexture(Texture texture) { 
+        this.powerupAmnesiaTexture = texture; 
+    }
+    
+    public void setPowerupCorazaTexture(Texture texture) { 
+        this.powerupCorazaTexture = texture; 
+    }
+    
+    public void setTragoSound(Sound sound) { 
+        this.tragoSound = sound; 
+    }
+    
+    public void setMusicaKaraoke(Music music) { 
+        this.musicaKaraoke = music; 
+    }
 }
