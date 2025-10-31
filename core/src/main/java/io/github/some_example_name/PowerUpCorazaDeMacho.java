@@ -43,7 +43,6 @@ public class PowerUpCorazaDeMacho extends PowerUp{
         this.activa = true;
         this.tiempoRestante = getDuracion();
         
-        System.out.println("🛡️ Coraza activada - Inmune a recuerdos por " + getDuracion() + "s");
     }
     
     
@@ -67,7 +66,6 @@ public class PowerUpCorazaDeMacho extends PowerUp{
         this.activa = false;
         this.tiempoRestante = 0;
         
-        System.out.println("🛡️ Coraza desactivada - Vulnerable nuevamente");
     }
     
     // ===== MÉTODOS PÚBLICOS ESPECÍFICOS DE CORAZA =====
@@ -100,7 +98,6 @@ public class PowerUpCorazaDeMacho extends PowerUp{
         this.tiempoRestante = 0;
         //desactivarEfectoVisual();
         
-        System.out.println("⏰ Coraza expirada - Protección terminada");
     }
     
     // ===== MÉTODOS DE DEBUG =====

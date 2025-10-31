@@ -23,7 +23,6 @@ public abstract class Recuerdo extends ObjetoCaida{
     public void aplicarEfecto(Carlos carlos) {
     	// 🛡️ VERIFICACIÓN: Si la coraza está activa, el recuerdo no tiene efecto
         if (carlos.isCorazaActiva()) {
-            System.out.println("🛡️ Recuerdo bloqueado por Coraza de Macho.");
             return; // Detener el efecto negativo
         }
         

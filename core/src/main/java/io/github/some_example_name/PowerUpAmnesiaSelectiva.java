@@ -33,9 +33,6 @@ public class PowerUpAmnesiaSelectiva extends PowerUp{
         
         // 3. Bajar Ebriedad en 10
         carlos.reducirEbriedad(EBRIEDAD_REDUCCION); // Usa el nuevo método en Carlos
-        
-        System.out.println("🧠 Amnesia Selectiva: Score -" + scoreReduccion + 
-                           ", Autoestima 100, Ebriedad -" + EBRIEDAD_REDUCCION);
     }
     
     // Sobreescritura de PowerUp para efectos instantáneos

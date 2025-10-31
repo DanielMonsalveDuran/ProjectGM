@@ -51,8 +51,7 @@ public abstract class PowerUp extends ObjetoCaida{
      * Método template - las hijas pueden overridear partes específicas
      */
     public void desactivarPowerUp(Carlos carlos) {
-        //desactivarEfectoVisual();
-        System.out.println("⚡ Power-up desactivado: " + nombre);
+        
     }
     
     // GETTERS PÚBLICOS (encapsulamiento - acceso controlado)
@@ -77,23 +76,19 @@ public abstract class PowerUp extends ObjetoCaida{
         return autoestimaBase;
     }
     
-    // MÉTODOS DE UTILIDAD PROTEGIDOS (para hijas)
+    // MÉTODOS DE UTILIDAD PROTEGIDOS (para hijas) funciones para implementar más adelante
     
     /**
      * Método helper para hijas - aplicar efecto de sonido
      */
-    protected final void reproducirSonido(String sonido) {
-        // Lógica para reproducir sonido (implementar según audio manager)
-        System.out.println("🔊 Reproduciendo: " + sonido);
-    }
+    /*protected final void reproducirSonido(String sonido) {
+    }*/
     
     /**
      * Método helper para hijas - spawnear partículas
      */
-    protected final void spawnearParticulas(String tipoParticula) {
-        // Lógica para efectos de partículas
-        System.out.println("✨ Partículas: " + tipoParticula);
-    }
+    /*protected final void spawnearParticulas(String tipoParticula) {
+    }*/
     
     // SOBREESCRITURA DE ObjetoCaida
     

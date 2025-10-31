@@ -41,8 +41,6 @@ public class PowerUpAutotuneEmocional extends PowerUp {
         
         // 5. Inicializar contador para efecto gradual
         this.tiempoAcumulado = 0f;
-        
-        System.out.println("🎤 AUTOTUNE PLUS: +20 autoestima, +velocidad");
     }
     
     private Carlos getCarlos() {
@@ -65,17 +63,8 @@ public class PowerUpAutotuneEmocional extends PowerUp {
         Carlos carlos = obtenerCarlos(); 
         if (carlos != null) {
             carlos.sumarAutoestima(1);
-            System.out.println("💖 Autotune Plus: +1 autoestima gradual - Total: " + carlos.getAutoestima());
             
-            // Efecto visual pequeño por cada incremento
-            activarEfectoIncremental();
         }
-    }
-    
-    private void activarEfectoIncremental() {
-        // Efecto visual sano por cada +1 autoestima
-        System.out.println("✨ Efecto incremental: Pequeño brillo por +1 autoestima");
-        // spawnearParticulas("brillo_pequeno");
     }
     
     @Override
@@ -87,9 +76,6 @@ public class PowerUpAutotuneEmocional extends PowerUp {
             targetCarlos.setVelocidad(this.velocidadOriginal);
         }
         
-        //desactivarEfectoVisual();
-        System.out.println("🎤 Autotune Plus terminado. Velocidad restaurada.");
-        
         super.desactivarPowerUp(carlos);
     }
     
@@ -98,14 +84,6 @@ public class PowerUpAutotuneEmocional extends PowerUp {
      * NECESITAS ADAPTAR ESTO según tu arquitectura
      */
     private Carlos obtenerCarlos() {
-        // OPCIÓN 1: Si tienes una referencia global
-        // return GameManager.getInstance().getCarlos();
-        
-        // OPCIÓN 2: Si Carlos se pasa como parámetro
-        // (necesitarías almacenarlo en el constructor)
-        
-        // OPCIÓN 3: Temporal - para testing
-        System.out.println("⚠️ Implementar obtenerCarlos() según tu arquitectura");
         return null;
     }
     

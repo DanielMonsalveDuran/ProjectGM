@@ -42,21 +42,18 @@ public class KaraokeDespecho extends ApplicationAdapter {
         
         try {
             sonidoLlanto = Gdx.audio.newSound(Gdx.files.internal("llanto.wav"));
-            System.out.println("✅ Sonido llanto cargado");
         } catch (Exception e) {
             System.out.println("❌ No se pudo cargar llanto.wav - Continuando sin sonido");
         }
         
         try {
             tragoSound = Gdx.audio.newSound(Gdx.files.internal("trago.wav"));
-            System.out.println("✅ Sonido trago cargado");
         } catch (Exception e) {
             System.out.println("❌ No se pudo cargar trago.wav - Continuando sin sonido");
         }
         
         try {
             musicaKaraoke = Gdx.audio.newMusic(Gdx.files.internal("karaoke.mp3"));
-            System.out.println("✅ Música cargada");
         } catch (Exception e) {
             System.out.println("❌ No se pudo cargar karaoke.mp3 - Continuando sin música");
         }
@@ -95,17 +92,12 @@ public class KaraokeDespecho extends ApplicationAdapter {
         juegoActivo = true;
         pantallaGameOver = new PantallaGameOver(this);
         
-        System.out.println("🎮 Juego iniciado correctamente");
     }
     
     private Texture cargarTexturaEscalada(String archivo) {
         try {
             // Cargar el Pixmap original
             Pixmap pixmapOriginal = new Pixmap(Gdx.files.internal(archivo));
-            
-            // Mostrar info del original
-            System.out.println("   📐 " + archivo + " original: " + 
-                pixmapOriginal.getWidth() + "x" + pixmapOriginal.getHeight());
             
             // Crear nuevo Pixmap con el tamaño deseado
             Pixmap pixmapEscalado = new Pixmap(TAMANIO_OBJETO, TAMANIO_OBJETO, Format.RGBA8888);
@@ -123,7 +115,6 @@ public class KaraokeDespecho extends ApplicationAdapter {
             pixmapOriginal.dispose();
             pixmapEscalado.dispose();
             
-            System.out.println("   ✅ " + archivo + " escalado a " + TAMANIO_OBJETO + "x" + TAMANIO_OBJETO);
             return textura;
             
         } catch (Exception e) {
@@ -131,7 +122,6 @@ public class KaraokeDespecho extends ApplicationAdapter {
             // Si falla, cargar normalmente (sin escalar)
             try {
                 Texture textura = new Texture(Gdx.files.internal(archivo));
-                System.out.println("   ⚠️ " + archivo + " cargado sin escalar");
                 return textura;
             } catch (Exception e2) {
                 System.out.println("   💥 Error crítico con " + archivo);
@@ -148,7 +138,6 @@ public class KaraokeDespecho extends ApplicationAdapter {
         lluviaRecuerdos.crear(); // Esto debería reiniciar el array de objetos
         
         juegoActivo = true;
-        System.out.println("🔄 Juego reiniciado - Autoestima: " + carlos.getAutoestima());
     }
     
     @Override

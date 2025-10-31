@@ -119,7 +119,6 @@ public class Carlos implements ElementoJuego{
                 sonidoLlanto.play();
             }
             
-            // ❌ Ya no se llama a actualizarEstadoAnimo() aquí, se llama en actualizar()
         }
     }
     
@@ -130,7 +129,6 @@ public class Carlos implements ElementoJuego{
             this.tiempoEstadoTemporal = duracion;
             this.estadoTemporalActivo = true;
             this.estadoAnimo = estado; // Actualizar de inmediato para el HUD
-            System.out.println("💔 Estado Temporal Activado: " + estado + " por " + duracion + "s");
         }
     }
     
@@ -138,7 +136,6 @@ public class Carlos implements ElementoJuego{
     public void aumentarScore(int puntos) {
         int puntosConMultiplicador = (int)(puntos * multiplicadorScore);
         this.score += puntosConMultiplicador;
-        System.out.println("⭐ +" + puntosConMultiplicador + " puntos! (Multiplicador: " + multiplicadorScore + "x)");
     }
     
     // GETTERS Y SETTERS (Control de acceso)
@@ -166,21 +163,18 @@ public class Carlos implements ElementoJuego{
     public void aumentarEbriedad(int nivel) { 
         ebriedad += nivel;
         if (ebriedad > 100) ebriedad = 100;
-        System.out.println("🍺 Ebriedad: " + ebriedad + "/100");
     }
     
  // 🟢 NUEVO: Método para reducir ebriedad (usado por Amnesia)
     public void reducirEbriedad(int nivel) {
         ebriedad -= nivel;
         if (ebriedad < 0) ebriedad = 0;
-        System.out.println("🍺 Ebriedad reducida a: " + ebriedad + "/100");
     }
 
     // 🟢 NUEVO: Método para reducir score sin multiplicador (usado por Amnesia)
     public void reducirScore(int puntos) {
         this.score -= puntos;
         if (this.score < 0) this.score = 0;
-        System.out.println("⭐ -" + puntos + " puntos! (Amnesia)");
     }
 
     // 🟢 NUEVO GETTER: Para que Recuerdo pueda chequear la protección
@@ -200,21 +194,18 @@ public class Carlos implements ElementoJuego{
         this.tiempoAutotune = duracion; // ✅ RESETEA tiempo (no acumula)
         this.autotuneActivo = true;
         recalcularMultiplicador();
-        System.out.println("🎤 Autotune activado: " + duracion + "s");
     }
     
     public void activarAmnesia(float duracion) {
         this.tiempoAmnesia = duracion; // ✅ RESETEA tiempo (no acumula)  
         this.amnesiaActiva = true;
         recalcularMultiplicador();
-        System.out.println("🧠 Amnesia activada: " + duracion + "s");
     }
     
     public void activarCoraza(float duracion) {
         this.tiempoCoraza = duracion; // ✅ RESETEA tiempo (no acumula)
         this.corazaActiva = true;
         recalcularMultiplicador();
-        System.out.println("🛡️ Coraza activada: " + duracion + "s");
     }
     
     public float getTiempoCoraza() {
@@ -308,7 +299,6 @@ public class Carlos implements ElementoJuego{
             if (tiempoCoraza <= 0) {
                 tiempoCoraza = 0;
                 corazaActiva = false;
-                System.out.println("⏰ Coraza expirada");
                 cambio = true;
             }
         }
@@ -319,7 +309,6 @@ public class Carlos implements ElementoJuego{
             if (tiempoAutotune <= 0) {
                 tiempoAutotune = 0;
                 autotuneActivo = false;
-                System.out.println("⏰ Autotune expirado");
                 cambio = true;
             }
         }
@@ -330,7 +319,6 @@ public class Carlos implements ElementoJuego{
             if (tiempoAmnesia <= 0) {
                 tiempoAmnesia = 0;
                 amnesiaActiva = false;
-                System.out.println("⏰ Amnesia expirada");
                 cambio = true;
             }
         }
@@ -349,7 +337,6 @@ public class Carlos implements ElementoJuego{
             if (tiempoEstadoTemporal <= 0) {
                 tiempoEstadoTemporal = 0;
                 estadoTemporalActivo = false;
-                System.out.println("⏰ Estado Temporal Expirado. Revirtiendo a estado base.");
                 actualizarEstadoAnimo(); // Revertir al estado base
             }
         }
