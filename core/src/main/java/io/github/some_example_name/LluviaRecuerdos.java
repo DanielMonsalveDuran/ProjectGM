@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class LluviaRecuerdos {
+    // Campos de la clase...
     private Array<ObjetoCaida> objetosCaida;
     private long ultimoObjetoTiempo;
     private Texture tragoTexture;
@@ -23,10 +24,15 @@ public class LluviaRecuerdos {
     private Sound tragoSound;
     private Music musicaKaraoke;
     
+    /**
+     * Constructor que inicializa las referencias a todas las texturas, sonidos y música
+     * que serán utilizadas para crear los objetos que caen.
+     */
     public LluviaRecuerdos(Texture tragoTex, 
                           Texture fotoTex, Texture cartaTex, Texture mensajeTex,
                           Texture autotuneTex, Texture amnesiaTex, Texture corazaTex,
                           Sound ts, Music mm) {
+        // Asignación de referencias a los campos de la clase
         musicaKaraoke = mm;
         tragoSound = ts;
         this.tragoTexture = tragoTex;
@@ -38,29 +44,40 @@ public class LluviaRecuerdos {
         this.powerupCorazaTexture = corazaTex;
     }
     
+    /**
+     * Inicializa el array de objetos que caen y comienza la música.
+     * Se utiliza para iniciar o reiniciar el estado de la lluvia de objetos.
+     */
     public void crear() {
         objetosCaida = new Array<ObjetoCaida>();
         crearObjeto();
         
-        // Solo reproducir música si existe
+        // Solo reproducir música si existe y configurar el loop
         if (musicaKaraoke != null) {
             musicaKaraoke.setLooping(true);
             musicaKaraoke.play();
         }
     }
     
+    /**
+     * Crea un nuevo objeto que cae (Trago, Recuerdo o Power-up)
+     * basándose en una probabilidad definida (60% Tragos, 30% Recuerdos, 10% Power-ups).
+     * El nuevo objeto se añade al array `objetosCaida`.
+     */
     private void crearObjeto() {
+        // Lógica de cálculo de posición x inicial y posición y superior
         float x = MathUtils.random(0, 800 - 64);
         float y = 480;
         
+        // Generación de un número aleatorio para determinar el tipo de objeto
         int tipo = MathUtils.random(1, 10);
         ObjetoCaida nuevoObjeto;
         
         if (tipo <= 6) {
-            // 60% probabilidad - Tragos
+            // 60% probabilidad: Instancia un Trago
             nuevoObjeto = new Trago(tragoTexture, x, y);
         } else if (tipo <= 9) {
-            // 30% probabilidad - Recuerdos (Instanciar subclases)
+            // 30% probabilidad: Instancia una de las subclases de Recuerdo
             int tipoRecuerdo = MathUtils.random(0, 2);
             
             if (tipoRecuerdo == 0) {
@@ -74,58 +91,79 @@ public class LluviaRecuerdos {
                 nuevoObjeto = new RecuerdoMensaje(recuerdoMensajeTexture, x, y);
             }
         } else {
-            // 10% probabilidad - Power-ups
+            // 10% probabilidad: Instancia uno de los Power-ups
             int tipoPowerUp = MathUtils.random(0, 2);
+            // Declaraciones String y Texture eliminadas por el compilador, pero no modificadas
             String tipoString;
             Texture texturaPowerUp;
             
             if (tipoPowerUp == 0) {
-                // 🟢 CORREGIDO: Amnesia Selectiva usa powerupAmnesiaTexture
+                // Amnesia Selectiva
                 nuevoObjeto = new PowerUpAmnesiaSelectiva(powerupAmnesiaTexture, x, y);
             } else if (tipoPowerUp == 1) {
-                // 🟢 CORREGIDO: Autotune Emocional usa powerupAutotuneTexture
+                // Autotune Emocional
                 nuevoObjeto = new PowerUpAutotuneEmocional(powerupAutotuneTexture, x, y);
             } else {
+                // Coraza de Macho
                 nuevoObjeto = new PowerUpCorazaDeMacho(powerupCorazaTexture, x, y);
             }
         }
         
+        // Añade el objeto al array y actualiza el tiempo del último objeto creado
         objetosCaida.add(nuevoObjeto);
         ultimoObjetoTiempo = TimeUtils.nanoTime();
     }
     
+    /**
+     * Actualiza la lógica de movimiento de todos los objetos que caen,
+     * verifica las colisiones con Carlos, y elimina objetos fuera de pantalla.
+     * @param carlos La instancia del personaje Carlos con la que se verifican las colisiones.
+     */
     public void actualizarMovimiento(Carlos carlos) {
+        // Si ha pasado el tiempo necesario, crea un nuevo objeto
         if (TimeUtils.nanoTime() - ultimoObjetoTiempo > 100000000) {
             crearObjeto();
         }
         
+        // Itera sobre la lista de objetos en reversa para poder eliminar elementos
         for (int i = objetosCaida.size - 1; i >= 0; i--) {
             ObjetoCaida objeto = objetosCaida.get(i);
-            objeto.actualizar();
+            objeto.actualizar(); // Mueve el objeto hacia abajo
             
+            // Si está fuera de pantalla, lo remueve
             if (objeto.estaFueraDePantalla()) {
                 objetosCaida.removeIndex(i);
             } else if (objeto.getArea().overlaps(carlos.getArea())) {
+                // Si colisiona con Carlos, aplica el efecto
                 objeto.aplicarEfecto(carlos);
                 
-                // ✅ CORREGIDO: Verificar si el sonido existe
+                // Si es un Trago y el sonido existe, lo reproduce
                 if (objeto instanceof Trago && tragoSound != null) {
                     tragoSound.play();
                 }
                 
+                // Remueve el objeto después de la colisión
                 objetosCaida.removeIndex(i);
             }
         }
     }
     
+    /**
+     * Dibuja todos los objetos que están actualmente en el array `objetosCaida`.
+     * @param batch El SpriteBatch activo para dibujar.
+     */
     public void actualizarDibujoLluvia(SpriteBatch batch) {
         for (ObjetoCaida objeto : objetosCaida) {
             objeto.dibujar(batch);
         }
     }
     
+    /**
+     * Libera (dispose) todos los recursos gráficos y de audio (texturas, sonidos, música)
+     * asociados a esta clase para evitar fugas de memoria.
+     */
     public void destruir() {
-        // Liberar sonidos si existen
+        // Libera el sonido del trago y la música
         if (tragoSound != null) {
             tragoSound.dispose();
         }
@@ -133,7 +171,7 @@ public class LluviaRecuerdos {
             musicaKaraoke.dispose();
         }
         
-        // Liberar texturas
+        // Libera todas las texturas de los objetos que caen
         tragoTexture.dispose();
         recuerdoFotoTexture.dispose();
         recuerdoCartaTexture.dispose();
@@ -143,6 +181,7 @@ public class LluviaRecuerdos {
         powerupCorazaTexture.dispose();
     }
     
+    // Métodos Getters y Setters de los campos de la clase...
     public Array<ObjetoCaida> getObjetosCaida() { 
         return objetosCaida; 
     }

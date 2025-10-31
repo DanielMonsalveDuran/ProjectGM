@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 
 public class KaraokeDespecho extends ApplicationAdapter {
+       // Campos de la clase...
        private OrthographicCamera camera;
 	   private SpriteBatch batch;	   
 	   private BitmapFont font;
@@ -31,34 +32,43 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	   private static final int TAMANIO_OBJETO = 64;
 	   
 	   
+    /**
+     * Método de inicialización llamado una sola vez al iniciar la aplicación.
+     * Carga recursos (sonidos, texturas), inicializa la cámara, el batch,
+     * el personaje Carlos y el gestor de objetos (LluviaRecuerdos).
+     */
 	@Override
     public void create() {
+        // Inicializa la fuente para el HUD
         font = new BitmapFont();
         
-        // ✅ CÓDIGO CON TRY-CATCH PARA SONIDOS
+        // Inicialización de recursos de audio con manejo de errores (try-catch)
         Sound sonidoLlanto = null;
         Sound tragoSound = null;
         Music musicaKaraoke = null;
         
+        // Intenta cargar el sonido de llanto
         try {
             sonidoLlanto = Gdx.audio.newSound(Gdx.files.internal("llanto.wav"));
         } catch (Exception e) {
             System.out.println("❌ No se pudo cargar llanto.wav - Continuando sin sonido");
         }
         
+        // Intenta cargar el sonido del trago
         try {
             tragoSound = Gdx.audio.newSound(Gdx.files.internal("trago.wav"));
         } catch (Exception e) {
             System.out.println("❌ No se pudo cargar trago.wav - Continuando sin sonido");
         }
         
+        // Intenta cargar la música de karaoke
         try {
             musicaKaraoke = Gdx.audio.newMusic(Gdx.files.internal("karaoke.mp3"));
         } catch (Exception e) {
             System.out.println("❌ No se pudo cargar karaoke.mp3 - Continuando sin música");
         }
         
-        // Cargar texturas (estas SÍ deben existir)
+        // Cargar texturas y escalarlas a un tamaño fijo
         Texture carlosTexture = cargarTexturaEscalada("carlos.png");
         Texture tragoTexture = cargarTexturaEscalada("trago.png");
         Texture recuerdoFotoTexture = cargarTexturaEscalada("recuerdo_foto.png");
@@ -68,8 +78,10 @@ public class KaraokeDespecho extends ApplicationAdapter {
         Texture amnesiaTexture = cargarTexturaEscalada("powerup_amnesia.png");
         Texture corazaTexture = cargarTexturaEscalada("powerup_coraza.png");
         
+        // Inicializa el personaje principal
         carlos = new Carlos(carlosTexture, sonidoLlanto);
         
+        // Inicializa el gestor de objetos que caen, pasando todas las texturas y audios
         lluviaRecuerdos = new LluviaRecuerdos(
             tragoTexture, 
             recuerdoFotoTexture, 
@@ -82,19 +94,29 @@ public class KaraokeDespecho extends ApplicationAdapter {
             musicaKaraoke
         );
         
+        // Configura la cámara ortográfica para la vista del juego (800x480)
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
         
+        // Llama a los métodos de creación inicial de los elementos del juego
         carlos.crear();
         lluviaRecuerdos.crear();
         
+        // Inicializa el estado de la partida y la pantalla de Game Over
         juegoActivo = true;
         pantallaGameOver = new PantallaGameOver(this);
         
     }
     
+    /**
+     * Método auxiliar que carga una textura de un archivo y la escala
+     * a un tamaño fijo definido por TAMANIO_OBJETO (64x64).
+     * @param archivo El nombre del archivo de la textura a cargar.
+     * @return La textura cargada y escalada, o lanza una excepción si falla críticamente.
+     */
     private Texture cargarTexturaEscalada(String archivo) {
+        // Intenta cargar y escalar la textura
         try {
             // Cargar el Pixmap original
             Pixmap pixmapOriginal = new Pixmap(Gdx.files.internal(archivo));
@@ -111,7 +133,7 @@ public class KaraokeDespecho extends ApplicationAdapter {
             // Crear textura desde el Pixmap escalado
             Texture textura = new Texture(pixmapEscalado);
             
-            // Liberar memoria
+            // Liberar memoria de los pixmaps
             pixmapOriginal.dispose();
             pixmapEscalado.dispose();
             
@@ -119,109 +141,120 @@ public class KaraokeDespecho extends ApplicationAdapter {
             
         } catch (Exception e) {
             System.out.println("   ❌ Error cargando " + archivo + ": " + e.getMessage());
-            // Si falla, cargar normalmente (sin escalar)
+            // Si falla el escalado, intenta cargar la textura normalmente
             try {
                 Texture textura = new Texture(Gdx.files.internal(archivo));
                 return textura;
             } catch (Exception e2) {
                 System.out.println("   💥 Error crítico con " + archivo);
+                // Si el archivo no existe, lanza una excepción de runtime
                 throw new RuntimeException("No se pudo cargar: " + archivo);
             }
         }
     }
     
+    /**
+     * Reinicia el estado del juego para comenzar una nueva partida.
+     * Reinicia el estado de Carlos y la generación de objetos.
+     */
     public void reiniciarJuego() {
-        // Opción simple: solo reiniciar el estado de los objetos existentes
+        // Reinicia todos los atributos de Carlos
         carlos.reiniciar();
         
-        // Limpiar la lluvia de objetos actual
-        lluviaRecuerdos.crear(); // Esto debería reiniciar el array de objetos
+        // Reinicia la generación de objetos que caen
+        lluviaRecuerdos.crear(); 
         
+        // Activa el juego
         juegoActivo = true;
     }
     
+    /**
+     * El bucle principal del juego, llamado continuamente.
+     * Contiene la lógica de Game Over, la actualización del estado del juego
+     * y el dibujado de todos los elementos.
+     */
     @Override
     public void render() {
-        // Verificar condición de derrota
+        // 1. Verificar condición de derrota
         if (carlos.estaDerrotado()) {
-            if (juegoActivo) { // Solo si el juego estaba activo antes de la derrota
+            // Si Carlos está derrotado y el juego estaba activo, pasa el score a la pantalla de GO
+            if (juegoActivo) { 
                 pantallaGameOver.setScoreFinal(carlos.getScore()); 
             }
             juegoActivo = false;
         }
         
-        // Si el juego no está activo, mostrar pantalla de Game Over
+        // 2. Control de estado de juego
         if (!juegoActivo) {
+            // Si el juego no está activo, solo renderiza la pantalla de Game Over y retorna
             pantallaGameOver.render(Gdx.graphics.getDeltaTime());
             return;
         }
         
-        // Limpiar pantalla
-        ScreenUtils.clear(0.1f, 0.1f, 0.2f, 1);
-        
-        // Actualizar cámara y batch
+        // 3. Fase de Dibujado (HUD)
+        ScreenUtils.clear(0.1f, 0.1f, 0.2f, 1); // Limpia la pantalla con un color de fondo
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         
-        // Comenzar dibujado
         batch.begin();
         
-        // ✅ HUD ACTUALIZADO: Autoestima, Ebriedad, Estado izquierda | Score derecha
+        // Dibuja la información del HUD (Autoestima, Ebriedad, Estado, Score, Multiplicador)
         font.draw(batch, "Autoestima: " + carlos.getAutoestima(), 5, 475);
         font.draw(batch, "Ebrio: " + carlos.getEbriedad() + "%", 5, 450);
         font.draw(batch, "Estado: " + carlos.getEstadoAnimo(), 5, 425);
-        
-        // ✅ Score arriba a la derecha
         font.draw(batch, "Score: " + carlos.getScore(), 650, 475);
         font.draw(batch, String.format("Multiplicador: %.1fx", carlos.getMultiplicadorScore()), 650, 450);
         
-        // ✅ NUEVO: Mostrar power-ups activos con temporizadores
+        // Dibuja el estado de los Power-ups activos con su tiempo restante
         font.draw(batch, "Power-ups activos:", 5, 400);
         
         int yPos = 380;
         
-        // Mostrar Coraza si está activa
+        // Muestra Coraza
         if (carlos.isCorazaActiva()) {
             String texto = String.format("🛡️ Coraza: %.1fs", carlos.getTiempoCoraza());
             font.draw(batch, texto, 10, yPos);
             yPos -= 20;
         }
         
-        // Mostrar Autotune si está activo  
+        // Muestra Autotune
         if (carlos.isAutotuneActivo()) {
             String texto = String.format("🎤 Autotune: %.1fs", carlos.getTiempoAutotune());
             font.draw(batch, texto, 10, yPos);
             yPos -= 20;
         }
         
-        // Mostrar Amnesia si está activa
+        // Muestra Amnesia
         if (carlos.isAmnesiaActiva()) {
             String texto = String.format("🧠 Amnesia: %.1fs", carlos.getTiempoAmnesia());
             font.draw(batch, texto, 10, yPos);
             yPos -= 20;
         }
         
-        // Mostrar advertencia cuando la autoestima es crítica
+        // Muestra advertencia de autoestima crítica
         if (carlos.getAutoestima() <= 30) {
             font.draw(batch, "¡PELIGRO! Autoestima crítica", 300, 50);
         }
         
-        // Finalizar dibujado del HUD
         batch.end();
         
-        // Actualizar y dibujar elementos del juego si Carlos no está deprimido
+        // 4. Fase de Actualización de Lógica
         if (!carlos.estaDeprimido()) {
-            carlos.actualizar();
-            lluviaRecuerdos.actualizarMovimiento(carlos);
+            carlos.actualizar(); // Actualiza movimiento, power-ups y estados de Carlos
+            lluviaRecuerdos.actualizarMovimiento(carlos); // Actualiza la caída de objetos y colisiones
         }
         
-        // Dibujar personaje y lluvia de objetos
+        // 5. Fase de Dibujado (Elementos de juego)
         batch.begin();
-        carlos.dibujar(batch);
-        lluviaRecuerdos.actualizarDibujoLluvia(batch);
+        carlos.dibujar(batch); // Dibuja a Carlos
+        lluviaRecuerdos.actualizarDibujoLluvia(batch); // Dibuja los objetos que caen
         batch.end();
     }
     
+    /**
+     * Método llamado al cerrar la aplicación.
+     * Libera todos los recursos gráficos y de audio cargados.
+     */
     @Override
     public void dispose() {
         carlos.destruir();
@@ -230,6 +263,7 @@ public class KaraokeDespecho extends ApplicationAdapter {
         font.dispose();
     }
     
+    // Métodos Getters y Setters...
     public Carlos getCarlos() {
         return carlos;
     }
