@@ -74,8 +74,14 @@ public class LluviaRecuerdos {
         ObjetoCaida nuevoObjeto;
         
         if (tipo <= 6) {
-            // 60% probabilidad: Instancia un Trago
-            nuevoObjeto = new Trago(tragoTexture, x, y);
+        	int tipoTrago = MathUtils.random(0, 2);
+        	if (tipoTrago == 0) {
+        	    nuevoObjeto = new TragoCervezaBarata(tragoTexture, x, y);
+        	} else if (tipoTrago == 1) {
+        	    nuevoObjeto = new TragoWhisky(tragoTexture, x, y);
+        	} else {
+        	    nuevoObjeto = new TragoTequila(tragoTexture, x, y);
+        	}
         } else if (tipo <= 9) {
             // 30% probabilidad: Instancia una de las subclases de Recuerdo
             int tipoRecuerdo = MathUtils.random(0, 2);

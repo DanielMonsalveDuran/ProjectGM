@@ -6,16 +6,16 @@ import com.badlogic.gdx.graphics.Texture;
  * Clase Trago - Implementa interfaz y extiende clase abstracta
  * REQUISITO GM1.4 y GM1.5
  */
-public class Trago extends ObjetoCaida{
-    private int potenciaAlcoholica;
-    private int boostAutoestima;
-    private int puntosScore;
+public abstract class Trago extends ObjetoCaida {
+    protected int potenciaAlcoholica;
+    protected int boostAutoestima;
+    protected int puntosScore;
     
-    public Trago(Texture textura, float x, float y) {
+    public Trago(Texture textura, float x, float y, int potencia, int boost, int puntos) {
         super(textura, x, y);
-        this.potenciaAlcoholica = 10;
-        this.boostAutoestima = 5;
-        this.puntosScore = 50;
+        this.potenciaAlcoholica = potencia;
+        this.boostAutoestima = boost;
+        this.puntosScore = puntos;
     }
     
     // Implementación del método abstracto de ObjetoCaida
