@@ -82,6 +82,20 @@ public class LluviaRecuerdos {
         	} else {
         	    nuevoObjeto = new TragoTequila(tragoTexture, x, y);
         	}
+
+        
+        	//========================================================
+            // ESPACIO PARA DISPOSE DE LOS 3 TRAGOS
+            // ========================================================
+        	//if (tipoTrago == 0) {
+        	    //nuevoObjeto = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
+        	//} else if (tipoTrago == 1) {
+        	    //nuevoObjeto = new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
+        	//} else {
+        	    //nuevoObjeto = new TragoTequila(loader.getTragoTequilaTexture(), x, y);
+        	//}
+        	
+        	
         } else if (tipo <= 9) {
             // 30% probabilidad: Instancia una de las subclases de Recuerdo
             int tipoRecuerdo = MathUtils.random(0, 2);
@@ -169,22 +183,10 @@ public class LluviaRecuerdos {
      * asociados a esta clase para evitar fugas de memoria.
      */
     public void destruir() {
-        // Libera el sonido del trago y la música
-        if (tragoSound != null) {
-            tragoSound.dispose();
-        }
+        // Solo detener música si existe (disposes ahora en CargarArchivos)
         if (musicaKaraoke != null) {
-            musicaKaraoke.dispose();
+            musicaKaraoke.stop();  // Opcional: detener antes de dispose en Singleton
         }
-        
-        // Libera todas las texturas de los objetos que caen
-        tragoTexture.dispose();
-        recuerdoFotoTexture.dispose();
-        recuerdoCartaTexture.dispose();
-        recuerdoMensajeTexture.dispose();
-        powerupAutotuneTexture.dispose();
-        powerupAmnesiaTexture.dispose();
-        powerupCorazaTexture.dispose();
     }
     
     // Métodos Getters y Setters de los campos de la clase...
