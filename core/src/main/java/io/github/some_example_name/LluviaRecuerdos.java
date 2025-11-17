@@ -14,7 +14,9 @@ public class LluviaRecuerdos {
     // Campos de la clase...
     private Array<ObjetoCaida> objetosCaida;
     private long ultimoObjetoTiempo;
-    private Texture tragoTexture;
+    private Texture tragoCervezaTexture;
+    private Texture tragoWhiskyTexture;
+    private Texture tragoTequilaTexture;
     private Texture recuerdoFotoTexture;
     private Texture recuerdoCartaTexture;
     private Texture recuerdoMensajeTexture;
@@ -28,14 +30,16 @@ public class LluviaRecuerdos {
      * Constructor que inicializa las referencias a todas las texturas, sonidos y música
      * que serán utilizadas para crear los objetos que caen.
      */
-    public LluviaRecuerdos(Texture tragoTex, 
+    public LluviaRecuerdos(Texture tragoCervezaTex, Texture tragoWhiskyTex, Texture tragoTequilaTex, 
                           Texture fotoTex, Texture cartaTex, Texture mensajeTex,
                           Texture autotuneTex, Texture amnesiaTex, Texture corazaTex,
                           Sound ts, Music mm) {
         // Asignación de referencias a los campos de la clase
         musicaKaraoke = mm;
         tragoSound = ts;
-        this.tragoTexture = tragoTex;
+        this.tragoCervezaTexture = tragoCervezaTex;
+        this.tragoTequilaTexture = tragoTequilaTex;
+        this.tragoWhiskyTexture = tragoWhiskyTex;
         this.recuerdoFotoTexture = fotoTex;
         this.recuerdoCartaTexture = cartaTex;
         this.recuerdoMensajeTexture = mensajeTex;
@@ -76,11 +80,11 @@ public class LluviaRecuerdos {
         if (tipo <= 6) {
         	int tipoTrago = MathUtils.random(0, 2);
         	if (tipoTrago == 0) {
-        	    nuevoObjeto = new TragoCervezaBarata(tragoTexture, x, y);
+        	    nuevoObjeto = new TragoCervezaBarata(tragoCervezaTexture, x, y);
         	} else if (tipoTrago == 1) {
-        	    nuevoObjeto = new TragoWhisky(tragoTexture, x, y);
+        	    nuevoObjeto = new TragoWhisky(tragoWhiskyTexture, x, y);
         	} else {
-        	    nuevoObjeto = new TragoTequila(tragoTexture, x, y);
+        	    nuevoObjeto = new TragoTequila(tragoTequilaTexture, x, y);
         	}
 
         
@@ -206,8 +210,14 @@ public class LluviaRecuerdos {
         this.ultimoObjetoTiempo = tiempo; 
     }
     
-    public Texture getTragoTexture() { 
-        return tragoTexture; 
+    public Texture getTragoCervezaTexture() { 
+    	return tragoCervezaTexture; 
+    }
+    public Texture getTragoWhiskyTexture() { 
+    	return tragoWhiskyTexture; 
+    }
+    public Texture getTragoTequilaTexture() { 
+    	return tragoTequilaTexture; 
     }
     
     public Texture getRecuerdoFotoTexture() { 
@@ -242,8 +252,16 @@ public class LluviaRecuerdos {
         return musicaKaraoke; 
     }
     
-    public void setTragoTexture(Texture texture) { 
-        this.tragoTexture = texture; 
+    public void setTragoCervezaTexture(Texture texture) { 
+        this.tragoCervezaTexture = texture; 
+    }
+    
+    public void setTragoWhiskyTexture(Texture texture) { 
+        this.tragoWhiskyTexture = texture; 
+    }
+    
+    public void setTragoTequilaTexture(Texture texture) { 
+        this.tragoTequilaTexture = texture; 
     }
     
     public void setRecuerdoFotoTexture(Texture texture) { 

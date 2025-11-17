@@ -15,7 +15,9 @@ public class CargarArchivos {
     private Sound tragoSound;
     private Music musicaKaraoke;
     private Texture carlosTexture;
-    private Texture tragoTexture;
+    private Texture tragoCervezaTexture;
+    private Texture tragoWhiskyTexture;
+    private Texture tragoTequilaTexture;
     private Texture recuerdoFotoTexture;
     private Texture recuerdoCartaTexture;
     private Texture recuerdoMensajeTexture;
@@ -66,7 +68,9 @@ public class CargarArchivos {
 
         // Cargar y escalar texturas
         carlosTexture = cargarTexturaEscalada("carlos.png");
-        tragoTexture = cargarTexturaEscalada("trago.png");
+        tragoCervezaTexture = cargarTexturaEscalada("trago_cerveza.png");
+        tragoWhiskyTexture = cargarTexturaEscalada("trago_whisky.png");
+        tragoTequilaTexture = cargarTexturaEscalada("trago_tequila.png");
         recuerdoFotoTexture = cargarTexturaEscalada("recuerdo_foto.png");
         recuerdoCartaTexture = cargarTexturaEscalada("recuerdo_carta.png");
         recuerdoMensajeTexture = cargarTexturaEscalada("recuerdo_mensaje.png");
@@ -107,7 +111,9 @@ public class CargarArchivos {
         if (tragoSound != null) tragoSound.dispose();
         if (musicaKaraoke != null) musicaKaraoke.dispose();
         if (carlosTexture != null) carlosTexture.dispose();
-        if (tragoTexture != null) tragoTexture.dispose();
+        if (tragoCervezaTexture != null) tragoCervezaTexture.dispose();
+        if (tragoWhiskyTexture != null) tragoWhiskyTexture.dispose();
+        if (tragoTequilaTexture != null) tragoTequilaTexture.dispose();
         if (recuerdoFotoTexture != null) recuerdoFotoTexture.dispose();
         if (recuerdoCartaTexture != null) recuerdoCartaTexture.dispose();
         if (recuerdoMensajeTexture != null) recuerdoMensajeTexture.dispose();
@@ -129,13 +135,15 @@ public class CargarArchivos {
     public Sound getTragoSound() { return tragoSound; }
     public Music getMusicaKaraoke() { return musicaKaraoke; }
     public Texture getCarlosTexture() { return carlosTexture; }
-    public Texture getTragoTexture() { return tragoTexture; }
     public Texture getRecuerdoFotoTexture() { return recuerdoFotoTexture; }
     public Texture getRecuerdoCartaTexture() { return recuerdoCartaTexture; }
     public Texture getRecuerdoMensajeTexture() { return recuerdoMensajeTexture; }
     public Texture getAutotuneTexture() { return autotuneTexture; }
     public Texture getAmnesiaTexture() { return amnesiaTexture; }
     public Texture getCorazaTexture() { return corazaTexture; }
+    public Texture getTragoCervezaTexture() { return tragoCervezaTexture; }
+    public Texture getTragoWhiskyTexture() { return tragoWhiskyTexture; }
+    public Texture getTragoTequilaTexture() { return tragoTequilaTexture; }
  // ========================================================
     //  ESPACIO PARA GETTERS DE LOS 3 TRAGOS
     // ========================================================

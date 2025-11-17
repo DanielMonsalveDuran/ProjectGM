@@ -49,7 +49,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	    Music musicaKaraoke = loader.getMusicaKaraoke();
 
 	    Texture carlosTexture = loader.getCarlosTexture();
-	    Texture tragoTexture = loader.getTragoTexture();
+	    Texture tragoCervezaTexture = loader.getTragoCervezaTexture();
+	    Texture tragoWhiskyTexture = loader.getTragoWhiskyTexture();
+	    Texture tragoTequilaTexture = loader.getTragoTequilaTexture();
 	    Texture recuerdoFotoTexture = loader.getRecuerdoFotoTexture();
 	    Texture recuerdoCartaTexture = loader.getRecuerdoCartaTexture();
 	    Texture recuerdoMensajeTexture = loader.getRecuerdoMensajeTexture();
@@ -60,7 +62,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	    // === INICIALIZACIÓN DEL JUEGO ===
 	    carlos = new Carlos(carlosTexture, sonidoLlanto);
 	    lluviaRecuerdos = new LluviaRecuerdos(
-	        tragoTexture, 
+	        tragoCervezaTexture,
+	        tragoWhiskyTexture,
+	        tragoTequilaTexture,
 	        recuerdoFotoTexture, 
 	        recuerdoCartaTexture, 
 	        recuerdoMensajeTexture,
