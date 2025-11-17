@@ -24,6 +24,8 @@ public abstract class Trago extends ObjetoCaida {
     	carlos.aumentarEbriedad(potenciaAlcoholica);
         carlos.sumarAutoestima(boostAutoestima);
         carlos.aumentarScore(puntosScore);
+        
+        carlos.getManejadorEstados().registrarTragoConsumido();
     }
     
     public int getPotenciaAlcoholica() { return potenciaAlcoholica; }

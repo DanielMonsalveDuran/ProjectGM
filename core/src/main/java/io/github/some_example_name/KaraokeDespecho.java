@@ -134,9 +134,15 @@ public class KaraokeDespecho extends ApplicationAdapter {
         // Dibuja la información del HUD (Autoestima, Ebriedad, Estado, Score, Multiplicador)
         font.draw(batch, "Autoestima: " + carlos.getAutoestima(), 5, 475);
         font.draw(batch, "Ebrio: " + carlos.getEbriedad() + "%", 5, 450);
-        font.draw(batch, "Estado: " + carlos.getEstadoAnimo(), 5, 425);
+        font.draw(batch, "Estado Duelo: " + carlos.getManejadorEstados().getEstadoActual().getNombre(), 5, 425);
         font.draw(batch, "Score: " + carlos.getScore(), 650, 475);
         font.draw(batch, String.format("Multiplicador: %.1fx", carlos.getMultiplicadorScore()), 650, 450);
+        
+        if (carlos.getManejadorEstados().isAceptacionActiva()) {
+            float tiempoRestante = ConfiguracionEstados.TIEMPO_ACEPTACION_VICTORIA - 
+                                 carlos.getManejadorEstados().getTiempoEnAceptacion();
+            font.draw(batch, String.format("Aceptación: %.1fs", tiempoRestante), 300, 475);
+        }
         
         // Dibuja el estado de los Power-ups activos con su tiempo restante
         font.draw(batch, "Power-ups activos:", 5, 400);

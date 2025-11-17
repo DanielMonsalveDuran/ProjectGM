@@ -144,29 +144,28 @@ public class LluviaRecuerdos {
      * @param carlos La instancia del personaje Carlos con la que se verifican las colisiones.
      */
     public void actualizarMovimiento(Carlos carlos) {
-        // Si ha pasado el tiempo necesario, crea un nuevo objeto
         if (TimeUtils.nanoTime() - ultimoObjetoTiempo > 100000000) {
             crearObjeto();
         }
         
-        // Itera sobre la lista de objetos en reversa para poder eliminar elementos
         for (int i = objetosCaida.size - 1; i >= 0; i--) {
             ObjetoCaida objeto = objetosCaida.get(i);
-            objeto.actualizar(); // Mueve el objeto hacia abajo
+            objeto.actualizar();
             
-            // Si está fuera de pantalla, lo remueve
             if (objeto.estaFueraDePantalla()) {
+                // === NUEVO: Registrar recuerdo evitado ===
+                carlos.getManejadorEstados().registrarRecuerdoEvitado();
                 objetosCaida.removeIndex(i);
             } else if (objeto.getArea().overlaps(carlos.getArea())) {
-                // Si colisiona con Carlos, aplica el efecto
                 objeto.aplicarEfecto(carlos);
                 
-                // Si es un Trago y el sonido existe, lo reproduce
+                // === NUEVO: Registrar recuerdo tomado ===
+                carlos.getManejadorEstados().registrarRecuestoTomado();
+                
                 if (objeto instanceof Trago && tragoSound != null) {
                     tragoSound.play();
                 }
                 
-                // Remueve el objeto después de la colisión
                 objetosCaida.removeIndex(i);
             }
         }

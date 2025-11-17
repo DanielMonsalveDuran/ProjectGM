@@ -95,6 +95,8 @@ public abstract class PowerUp extends ObjetoCaida{
     @Override
     public void aplicarEfecto(Carlos carlos) {
     	aplicarEfectoPowerUp(carlos);
+    	
+    	carlos.getManejadorEstados().registrarPowerupUsado();
     }
     
     @Override

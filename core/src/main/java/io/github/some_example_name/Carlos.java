@@ -16,7 +16,6 @@ public class Carlos implements ElementoJuego{
     private int autoestima;
     private int ebriedad;
     private int score; // Score infinito
-    private String estadoAnimo;
     private int velocidad;
     private boolean deprimido;
     private int tiempoDeprimidoMax;
@@ -38,10 +37,8 @@ public class Carlos implements ElementoJuego{
     private static final int CANTIDAD_REDUCCION = 1;
     private float tiempoDesdeUltimaReduccion = 0f;
     
-    // Atributos para el estado temporal de Recuerdo
-    private float tiempoEstadoTemporal;
-    private String estadoAnimoTemporal;
-    private boolean estadoTemporalActivo;
+    
+    private ManejadorEstadosDuelo manejadorEstados;
     
     /**
      * Constructor que inicializa los atributos de estado de Carlos,
@@ -53,7 +50,6 @@ public class Carlos implements ElementoJuego{
         this.autoestima = 100;
         this.ebriedad = 0;
         this.score = 0;
-        this.estadoAnimo = "Negación";
         this.velocidad = 400;
         this.deprimido = false;
         this.tiempoDeprimidoMax = 50;
@@ -66,10 +62,7 @@ public class Carlos implements ElementoJuego{
         this.tiempoAmnesia = 0f;
         this.multiplicadorScore = 1.0f; // Base 1.0x siempre
         
-        // Inicializa nuevo estado temporal
-        this.tiempoEstadoTemporal = 0f;
-        this.estadoAnimoTemporal = "Negación";
-        this.estadoTemporalActivo = false;
+        this.manejadorEstados = new ManejadorEstadosDuelo(this);
     }
     
     // MÉTODOS PÚBLICOS (Interfaz controlada)
@@ -100,7 +93,6 @@ public class Carlos implements ElementoJuego{
         this.autoestima = 100;
         this.ebriedad = 0;
         this.score = 0;
-        this.estadoAnimo = "Negación";
         this.deprimido = false;
         this.autotuneActivo = false;
         this.amnesiaActiva = false;
@@ -110,10 +102,6 @@ public class Carlos implements ElementoJuego{
         this.tiempoAmnesia = 0f;
         this.multiplicadorScore = 1.0f; // Reiniciar a 1.0x
         
-        // Reiniciar estado temporal
-        this.tiempoEstadoTemporal = 0f;
-        this.estadoAnimoTemporal = "Negación";
-        this.estadoTemporalActivo = false;
         
         // Reposiciona a Carlos
         if (area != null) {
@@ -140,20 +128,6 @@ public class Carlos implements ElementoJuego{
     }
     
     /**
-     * Establece un estado de ánimo temporal para Carlos (por ejemplo, 'Ira' de un recuerdo).
-     * @param estado El nombre del estado de ánimo.
-     * @param duracion La duración en segundos del estado temporal.
-     */
-    public void setEstadoTemporal(String estado, float duracion) {
-        if (!corazaActiva) {
-            this.estadoAnimoTemporal = estado;
-            this.tiempoEstadoTemporal = duracion;
-            this.estadoTemporalActivo = true;
-            this.estadoAnimo = estado; // Actualizar de inmediato para el HUD
-        }
-    }
-    
-    /**
      * Aumenta el score de Carlos, aplicando el multiplicador actual.
      * @param puntos Los puntos base a sumar.
      */
@@ -171,10 +145,7 @@ public class Carlos implements ElementoJuego{
      * Obtiene el estado de ánimo actual. Si el estado temporal está activo, devuelve ese estado.
      */
     public String getEstadoAnimo() { 
-        if (estadoTemporalActivo) {
-            return estadoAnimoTemporal;
-        }
-        return estadoAnimo; 
+    	return manejadorEstados.getEstadoActual().getNombre();
     }
     
     public boolean estaDeprimido() { return deprimido; }
@@ -187,7 +158,6 @@ public class Carlos implements ElementoJuego{
     public void sumarAutoestima(int puntos) { 
         autoestima = Math.min(100, autoestima + puntos);
         autoestima = Math.max(0, autoestima); // Asegurar que no sea negativo
-        actualizarEstadoAnimo(); // Actualiza estado base
     }
     
     /**
@@ -294,7 +264,8 @@ public class Carlos implements ElementoJuego{
     public void actualizar() {
         actualizarMovimientoInterno();
         actualizarPowerUps();
-        actualizarEstadoTemporal();
+        
+        manejadorEstados.actualizarEstado();
     }
     
     /**
@@ -415,36 +386,6 @@ public class Carlos implements ElementoJuego{
     }
     
     /**
-     * Gestiona el temporizador del estado de ánimo temporal (ej. Ira, Depresión).
-     * Si el tiempo expira, revierte el estado de ánimo al estado base.
-     */
-    private void actualizarEstadoTemporal() {
-        if (estadoTemporalActivo) {
-            tiempoEstadoTemporal -= Gdx.graphics.getDeltaTime();
-            
-            if (tiempoEstadoTemporal <= 0) {
-                tiempoEstadoTemporal = 0;
-                estadoTemporalActivo = false;
-                actualizarEstadoAnimo(); // Revertir al estado base
-            }
-        }
-    }
-    
-    /**
-     * Establece el estado de ánimo base (Negación/Aceptación) basado en el nivel de autoestima.
-     * Solo se ejecuta si NO hay un estado de ánimo temporal activo.
-     */
-    private void actualizarEstadoAnimo() {
-        if (estadoTemporalActivo) return; 
-        
-        if (autoestima > 30) {
-            estadoAnimo = "Negación";
-        } else {
-            estadoAnimo = "Aceptación";
-        }
-    }
-    
-    /**
      * Recalcula el multiplicador de score basado en los power-ups activos.
      * La base es 1.0x, y cada power-up activo añade un bonus fijo.
      */
@@ -473,7 +414,6 @@ public class Carlos implements ElementoJuego{
     
     public void setAutoestima(int autoestima) { 
         this.autoestima = Math.min(100, Math.max(0, autoestima));
-        actualizarEstadoAnimo();
     }
     
     public void setEbriedad(int ebriedad) { 
@@ -482,22 +422,6 @@ public class Carlos implements ElementoJuego{
     
     public void setScore(int score) { 
         this.score = Math.max(0, score); 
-    }
-    
-    public void setEstadoAnimo(String estadoAnimo) { 
-        this.estadoAnimo = estadoAnimo; 
-    }
-    
-    public void setEstadoTemporalActivo(boolean activo) { 
-        this.estadoTemporalActivo = activo; 
-    }
-    
-    public void setTiempoEstadoTemporal(float tiempo) { 
-        this.tiempoEstadoTemporal = tiempo; 
-    }
-    
-    public void setEstadoAnimoTemporal(String estado) {
-        this.estadoAnimoTemporal = estado;
     }
     
     public void setTiempoCoraza(float tiempo) { 
@@ -536,9 +460,10 @@ public class Carlos implements ElementoJuego{
         this.tiempoDeprimidoMax = tiempo;
     }
     
-    public boolean isEstadoTemporalActivo() { return estadoTemporalActivo; }
-    public float getTiempoEstadoTemporal() { return tiempoEstadoTemporal; }
-    public String getEstadoAnimoTemporal() { return estadoAnimoTemporal; }
+    public ManejadorEstadosDuelo getManejadorEstados() {
+        return manejadorEstados;
+    }
+    
     public int getTiempoDeprimido() { return tiempoDeprimido; }
     public int getTiempoDeprimidoMax() { return tiempoDeprimidoMax; }
     public Texture getTextura() { return textura; }

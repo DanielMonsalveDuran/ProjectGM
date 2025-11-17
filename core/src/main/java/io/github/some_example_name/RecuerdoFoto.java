@@ -13,12 +13,6 @@ public class RecuerdoFoto extends Recuerdo{
         super(textura, x, y, DANIO_AUTOESTIMA);
     }
     
-    @Override
-    protected void aplicarEstadoTemporal(Carlos carlos) {
-        // 💔 Estado Temporal: IRA
-        carlos.setEstadoTemporal("Ira", DURACION_ESTADO_TEMPORAL);
-    }
-    
     public static int getDanioAutoestima() {
         return DANIO_AUTOESTIMA;
     }
