@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 
+
+//Comentario para ver error
 public class CargarArchivos {
     private static CargarArchivos instance;
 
