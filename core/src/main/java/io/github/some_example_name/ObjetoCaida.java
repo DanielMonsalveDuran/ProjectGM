@@ -24,16 +24,15 @@ public abstract class ObjetoCaida implements ElementoJuego {
 
     // ===================== TEMPLATE METHOD =====================
     // Método final: define el orden exacto de ejecución
-    public final void aplicarEfecto(Carlos carlos) {
-        aplicarEfectosBasicos(carlos);
-        aplicarEfectosEspeciales(carlos);
+    public final void efectoColision(Carlos carlos) {
+        aplicarEfectos(carlos);
         registrarEvento(carlos);
     }
 
     // ------------------- PASOS DEL TEMPLATE -------------------
 
     /** 1. Cambios básicos de estadísticas (siempre se aplican) */
-    protected void aplicarEfectosBasicos(Carlos carlos) {
+    protected void aplicarEfectos(Carlos carlos) {
         int deltaAutoestima = getCambioAutoestima(carlos);
         int deltaEbriedad = getCambioEbriedad();
         int deltaScore = getCambioScore();
@@ -41,6 +40,7 @@ public abstract class ObjetoCaida implements ElementoJuego {
         if (deltaAutoestima != 0) carlos.sumarAutoestima(deltaAutoestima);
         if (deltaEbriedad != 0) carlos.aumentarEbriedad(deltaEbriedad);
         if (deltaScore != 0) carlos.aumentarScore((int)(deltaScore * carlos.getMultiplicadorScore()));
+        aplicarEfectosEspeciales(carlos);
     }
 
     /** 2. Efectos especiales únicos (deben implementar las hijas) */

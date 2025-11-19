@@ -157,7 +157,7 @@ public class LluviaRecuerdos {
                 carlos.getManejadorEstados().registrarRecuerdoEvitado();
                 objetosCaida.removeIndex(i);
             } else if (objeto.getArea().overlaps(carlos.getArea())) {
-                objeto.aplicarEfecto(carlos);
+                objeto.efectoColision(carlos);
                 
                 // === NUEVO: Registrar recuerdo tomado ===
                 carlos.getManejadorEstados().registrarRecuestoTomado();
