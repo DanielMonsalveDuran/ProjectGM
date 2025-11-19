@@ -6,33 +6,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 // 🟢 MODIFICADO: Clase abstracta base para recuerdos
-public abstract class Recuerdo extends ObjetoCaida{
-    
-    protected int danioEmocional;
-    
+public abstract class Recuerdo extends ObjetoCaida {
+    protected final int danioEmocional;
+
     public Recuerdo(Texture textura, float x, float y, int danio) {
         super(textura, x, y);
         this.danioEmocional = danio;
     }
-    
-    // 🟢 MODIFICADO: Implementación con chequeo de Coraza
+
+    @Override protected int getCambioAutoestima(Carlos carlos) {
+    	if (!carlos.isCorazaActiva()) {return -danioEmocional; }
+    	else return 0;}
+    @Override protected int getCambioEbriedad() { return 0; }
+    @Override protected int getCambioScore() { return -50; }
+
     @Override
-    public void aplicarEfecto(Carlos carlos) {
-    	// 🛡️ VERIFICACIÓN: Si la coraza está activa, el recuerdo no tiene efecto
-        if (carlos.isCorazaActiva()) {
-            return; // Detener el efecto negativo
+    protected void aplicarEfectosEspeciales(Carlos carlos) {
+        if (!carlos.isCorazaActiva()) {
+            carlos.deprimir();
         }
-        
-        // Aplicar daño genérico (deprimir) y el efecto específico
-        carlos.deprimir(); // Activa el llanto y el temblor por un tiempo
-        carlos.sumarAutoestima(-danioEmocional); // Aplica el daño específico de la hija
-    }
-    
-    public int getDanioEmocional() { 
-        return danioEmocional; 
-    }
-    
-    public void setDanioEmocional(int danio) { 
-        this.danioEmocional = danio; 
     }
 }
