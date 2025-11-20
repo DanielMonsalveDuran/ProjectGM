@@ -125,26 +125,6 @@ public class LluviaRecuerdos {
         return 200f; // Default
     }
     
-    private int getPotenciaBase(Trago trago) {
-        if (trago instanceof TragoCervezaBarata) return 8;
-        if (trago instanceof TragoWhisky) return 15;
-        if (trago instanceof TragoTequila) return 25;
-        return 8;
-    }
-
-    private int getBoostBase(Trago trago) {
-        if (trago instanceof TragoCervezaBarata) return 3;
-        if (trago instanceof TragoWhisky) return 8;
-        if (trago instanceof TragoTequila) return 12;
-        return 3;
-    }
-
-    private int getPuntosBase(Trago trago) {
-        if (trago instanceof TragoCervezaBarata) return 30;
-        if (trago instanceof TragoWhisky) return 75;
-        if (trago instanceof TragoTequila) return 100;
-        return 30;
-    }
     
     /**
      * Actualiza la lógica de movimiento de todos los objetos que caen,
