@@ -60,20 +60,20 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	    Texture corazaTexture = loader.getCorazaTexture();
 
 	    // === INICIALIZACIÓN DEL JUEGO ===
-	    carlos = new Carlos(carlosTexture, sonidoLlanto);
+	    carlos = new Carlos(loader.getCarlosTexture(), loader.getSonidoLlanto());
 	    lluviaRecuerdos = new LluviaRecuerdos(
-	        tragoCervezaTexture,
-	        tragoWhiskyTexture,
-	        tragoTequilaTexture,
-	        recuerdoFotoTexture, 
-	        recuerdoCartaTexture, 
-	        recuerdoMensajeTexture,
-	        autotuneTexture, 
-	        amnesiaTexture, 
-	        corazaTexture,
-	        tragoSound, 
-	        musicaKaraoke
+	            loader.getTragoCervezaTexture(), loader.getTragoWhiskyTexture(), loader.getTragoTequilaTexture(),
+	            loader.getRecuerdoFotoTexture(), loader.getRecuerdoCartaTexture(), loader.getRecuerdoMensajeTexture(),
+	            loader.getAutotuneTexture(), loader.getAmnesiaTexture(), loader.getCorazaTexture(),
+	            loader.getTragoSound(), loader.getMusicaKaraoke()
 	    );
+	    
+	    
+	    // 3. FINALMENTE crear ManejadorEstados con AMBAS referencias
+        ManejadorEstadosDuelo manejadorEstados = new ManejadorEstadosDuelo(carlos, lluviaRecuerdos);
+        
+        // 4. Inyectar ManejadorEstados en Carlos
+        carlos.setManejadorEstados(manejadorEstados);
 
 	    camera = new OrthographicCamera();
 	    camera.setToOrtho(false, 800, 480);

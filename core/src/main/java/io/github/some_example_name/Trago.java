@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
  * REQUISITO GM1.4 y GM1.5
  */
 public abstract class Trago extends ObjetoCaida {
-    protected final int potenciaAlcoholica;
-    protected final int boostAutoestima;
-    protected final int puntosScore;
+    protected int potenciaAlcoholica;
+    protected int boostAutoestima;
+    protected int puntosScore;
 
     public Trago(Texture textura, float x, float y, int potencia, int boost, int puntos) {
         super(textura, x, y);
@@ -30,5 +30,21 @@ public abstract class Trago extends ObjetoCaida {
     @Override
     protected void registrarEvento(Carlos carlos) {
         carlos.getManejadorEstados().registrarTragoConsumido();
+    }
+    
+    /**
+     * NUEVOS SETTERS - Permiten a las fábricas modificar efectos dinámicamente
+     * Esto es clave para el Abstract Factory simplificado
+     */
+    public void setPotenciaAlcoholica(int potencia) {
+        this.potenciaAlcoholica = potencia;
+    }
+    
+    public void setBoostAutoestima(int boost) {
+        this.boostAutoestima = boost;
+    }
+    
+    public void setPuntosScore(int puntos) {
+        this.puntosScore = puntos;
     }
 }

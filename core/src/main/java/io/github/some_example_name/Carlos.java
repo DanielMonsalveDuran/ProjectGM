@@ -62,7 +62,7 @@ public class Carlos implements ElementoJuego{
         this.tiempoAmnesia = 0f;
         this.multiplicadorScore = 1.0f; // Base 1.0x siempre
         
-        this.manejadorEstados = new ManejadorEstadosDuelo(this);
+        this.manejadorEstados = null;
     }
     
     // MÉTODOS PÚBLICOS (Interfaz controlada)
@@ -144,8 +144,11 @@ public class Carlos implements ElementoJuego{
     /**
      * Obtiene el estado de ánimo actual. Si el estado temporal está activo, devuelve ese estado.
      */
-    public String getEstadoAnimo() { 
-    	return manejadorEstados.getEstadoActual().getNombre();
+    public String getEstadoAnimo() {
+        if (manejadorEstados != null && manejadorEstados.getEstadoActual() != null) {
+            return manejadorEstados.getEstadoActual().getNombre();
+        }
+        return "Indefinido"; // Fallback seguro
     }
     
     public boolean estaDeprimido() { return deprimido; }
@@ -167,6 +170,11 @@ public class Carlos implements ElementoJuego{
     public void aumentarEbriedad(int nivel) { 
         ebriedad += nivel;
         if (ebriedad > 100) ebriedad = 100;
+        
+        // Registrar en manejador de estados si está disponible
+        if (manejadorEstados != null) {
+            // El registro de tragos consumidos se hace en Trago.aplicarEfecto
+        }
     }
     
     /**
@@ -462,6 +470,11 @@ public class Carlos implements ElementoJuego{
     
     public ManejadorEstadosDuelo getManejadorEstados() {
         return manejadorEstados;
+    }
+    
+    public void setManejadorEstados(ManejadorEstadosDuelo manejadorEstados) {
+        this.manejadorEstados = manejadorEstados;
+        System.out.println("🎭 ManejadorEstados inyectado en Carlos");
     }
     
     public int getTiempoDeprimido() { return tiempoDeprimido; }

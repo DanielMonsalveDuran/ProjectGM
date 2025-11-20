@@ -26,12 +26,16 @@ public class ManejadorEstadosDuelo {
     private float tiempoEnAceptacion;
     private boolean aceptacionActiva;
     
+    // === NUEVO CAMPO PARA COORDINACIÓN CON ABSTRACT FACTORY ===
+    private LluviaRecuerdos lluviaRecuerdos;
+    
     // Temporizadores
     private float tiempoDesdeUltimaMetrica;
     private static final float INTERVALO_ACTUALIZACION = 0.1f; // 10 veces por segundo
     
-    public ManejadorEstadosDuelo(Carlos carlos) {
+    public ManejadorEstadosDuelo(Carlos carlos, LluviaRecuerdos lluviaRecuerdos) {
         this.carlos = carlos;
+        this.lluviaRecuerdos = lluviaRecuerdos; // ← NUEVA REFERENCIA CRUCIAL
         this.estadoActual = EstadoDuelo.NEGACION;
         this.tiempoEnEstadoActual = 0f;
         this.tiempoTotalJuego = 0f;
@@ -42,6 +46,14 @@ public class ManejadorEstadosDuelo {
         this.recuerdosTomados = 0;
         this.powerupsUsados = 0;
         this.tragosConsumidos = 0;
+        
+        // Notificar fábrica inicial
+        if (lluviaRecuerdos != null) {
+            lluviaRecuerdos.actualizarFabrica(estadoActual);
+            System.out.println("🎭 ManejadorEstados coordinado con LluviaRecuerdos - Estado inicial: " + estadoActual);
+        } else {
+            System.out.println("⚠️  ManejadorEstados creado sin LluviaRecuerdos - Sistema factory no funcionará");
+        }
     }
     
     /**
@@ -106,9 +118,16 @@ public class ManejadorEstadosDuelo {
      * Ejecuta una transición entre estados
      */
     private void ejecutarTransicion(EstadoDuelo nuevoEstado) {
-        System.out.println("TRANSICIÓN: " + estadoActual + " → " + nuevoEstado);
+        System.out.println("TRANSICIÓN EMOCIONAL: " + estadoActual + " → " + nuevoEstado);
         
-        // Lógica especial para Aceptación
+        // === NOTIFICAR CAMBIO DE FÁBRICA A LLUVIA_RECUERDOS ===
+        if (lluviaRecuerdos != null) {
+            lluviaRecuerdos.actualizarFabrica(nuevoEstado);
+        } else {
+            System.out.println("❌ No se puede notificar cambio de fábrica - LluviaRecuerdos es null");
+        }
+        
+        // Lógica especial para Aceptación (existente)
         if (nuevoEstado == EstadoDuelo.ACEPTACION) {
             activarAceptacion();
         }
@@ -240,6 +259,25 @@ public class ManejadorEstadosDuelo {
     public boolean isAceptacionActiva() { return aceptacionActiva; }
     public int getRecuerdosEvitados() { return recuerdosEvitados; }
     public int getRecuerdosTomados() { return recuerdosTomados; }
+    /**
+     * NUEVO SETTER - Para inyección de dependencias después de la construcción
+     * Útil si LluviaRecuerdos se crea después de ManejadorEstados
+     */
+    public void setLluviaRecuerdos(LluviaRecuerdos lluviaRecuerdos) {
+        this.lluviaRecuerdos = lluviaRecuerdos;
+        // Notificar fábrica actual si ya tenemos un estado
+        if (lluviaRecuerdos != null && estadoActual != null) {
+            lluviaRecuerdos.actualizarFabrica(estadoActual);
+            System.out.println("🔗 LluviaRecuerdos inyectado en ManejadorEstados - Estado actual: " + estadoActual);
+        }
+    }
+    
+    /**
+     * NUEVO GETTER - Para verificar la coordinación con Abstract Factory
+     */
+    public boolean estaCoordinadoConFactory() {
+        return lluviaRecuerdos != null;
+    }
     
     // ==================== MÉTODOS PRIVADOS ====================
     

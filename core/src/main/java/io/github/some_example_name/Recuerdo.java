@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 // 🟢 MODIFICADO: Clase abstracta base para recuerdos
 public abstract class Recuerdo extends ObjetoCaida {
-    protected final int danioEmocional;
+    protected int danioEmocional;
 
     public Recuerdo(Texture textura, float x, float y, int danio) {
         super(textura, x, y);
@@ -25,5 +25,13 @@ public abstract class Recuerdo extends ObjetoCaida {
         if (!carlos.isCorazaActiva()) {
             carlos.deprimir();
         }
+    }
+    
+    /**
+     * NUEVO SETTER - Permite a las fábricas modificar el daño dinámicamente
+     * Esto es clave para el Abstract Factory simplificado
+     */
+    public void setDanioEmocional(int danio) {
+        this.danioEmocional = danio;
     }
 }

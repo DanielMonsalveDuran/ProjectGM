@@ -25,6 +25,8 @@ public class LluviaRecuerdos {
     private Texture powerupCorazaTexture;
     private Sound tragoSound;
     private Music musicaKaraoke;
+    private FabricaDeTragedias fabricaActual;
+    private RegistroFabricasEstados registroFabricas;
     
     /**
      * Constructor que inicializa las referencias a todas las texturas, sonidos y música
@@ -46,6 +48,11 @@ public class LluviaRecuerdos {
         this.powerupAutotuneTexture = autotuneTex;
         this.powerupAmnesiaTexture = amnesiaTex;
         this.powerupCorazaTexture = corazaTex;
+        
+        // === INICIALIZACIÓN ABSTRACT FACTORY ===
+        this.registroFabricas = RegistroFabricasEstados.getInstance();
+        // Por defecto empieza con Negación (estado inicial del juego)
+        this.fabricaActual = registroFabricas.getFabricaPorDefecto();
     }
     
     /**
@@ -75,67 +82,56 @@ public class LluviaRecuerdos {
         
         // Generación de un número aleatorio para determinar el tipo de objeto
         int tipo = MathUtils.random(1, 10);
-        ObjetoCaida nuevoObjeto;
+        ObjetoCaida nuevoObjeto = null;
         
-        if (tipo <= 6) {
-        	int tipoTrago = MathUtils.random(0, 2);
-        	if (tipoTrago == 0) {
-        	    nuevoObjeto = new TragoCervezaBarata(tragoCervezaTexture, x, y);
-        	} else if (tipoTrago == 1) {
-        	    nuevoObjeto = new TragoWhisky(tragoWhiskyTexture, x, y);
-        	} else {
-        	    nuevoObjeto = new TragoTequila(tragoTequilaTexture, x, y);
-        	}
-
+        try {
+        	if (tipo <= 6) {
+        		// 60% probabilidad: Trago (usando fábrica actual)
+                nuevoObjeto = fabricaActual.crearTrago(x, y);
+            } else if (tipo <= 9) {
+                // 30% probabilidad: Recuerdo (usando fábrica actual)
+                nuevoObjeto = fabricaActual.crearRecuerdo(x, y);
+            } else {
+                // 10% probabilidad: Power-up (usando fábrica actual)
+                nuevoObjeto = fabricaActual.crearPowerUp(x, y);
+            }
         
-        	//========================================================
-            // ESPACIO PARA DISPOSE DE LOS 3 TRAGOS
-            // ========================================================
-        	//if (tipoTrago == 0) {
-        	    //nuevoObjeto = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
-        	//} else if (tipoTrago == 1) {
-        	    //nuevoObjeto = new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
-        	//} else {
-        	    //nuevoObjeto = new TragoTequila(loader.getTragoTequilaTexture(), x, y);
-        	//}
-        	
-        	
-        } else if (tipo <= 9) {
-            // 30% probabilidad: Instancia una de las subclases de Recuerdo
-            int tipoRecuerdo = MathUtils.random(0, 2);
+    	} catch (Exception e) {
+    		System.out.println("❌ Error creando objeto con fábrica: " + e.getMessage());
+    		CargarArchivos loader =  CargarArchivos.getInstance();
+    		// Fallback: crear objeto básico para evitar crash
+    		nuevoObjeto = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
+    	}
+        
+        if (nuevoObjeto != null) {
+            // Aplicar modificador de velocidad del estado actual a TODOS los objetos
+            float velocidadBase = nuevoObjeto.getVelocidadCaida();
+            float nuevaVelocidad = velocidadBase * fabricaActual.getMultiplicadorVelocidad();
+            nuevoObjeto.setVelocidadCaida(nuevaVelocidad);
             
-            if (tipoRecuerdo == 0) {
-                // Foto: Ira
-                nuevoObjeto = new RecuerdoFoto(recuerdoFotoTexture, x, y);
-            } else if (tipoRecuerdo == 1) {
-                // Carta: Depresión
-                nuevoObjeto = new RecuerdoCarta(recuerdoCartaTexture, x, y);
-            } else {
-                // Mensaje: Negociación
-                nuevoObjeto = new RecuerdoMensaje(recuerdoMensajeTexture, x, y);
-            }
-        } else {
-            // 10% probabilidad: Instancia uno de los Power-ups
-            int tipoPowerUp = MathUtils.random(0, 2);
-            // Declaraciones String y Texture eliminadas por el compilador, pero no modificadas
-            String tipoString;
-            Texture texturaPowerUp;
-            
-            if (tipoPowerUp == 0) {
-                // Amnesia Selectiva
-                nuevoObjeto = new PowerUpAmnesiaSelectiva(powerupAmnesiaTexture, x, y);
-            } else if (tipoPowerUp == 1) {
-                // Autotune Emocional
-                nuevoObjeto = new PowerUpAutotuneEmocional(powerupAutotuneTexture, x, y);
-            } else {
-                // Coraza de Macho
-                nuevoObjeto = new PowerUpCorazaDeMacho(powerupCorazaTexture, x, y);
-            }
+            objetosCaida.add(nuevoObjeto);
+            ultimoObjetoTiempo = TimeUtils.nanoTime();
         }
-        
-        // Añade el objeto al array y actualiza el tiempo del último objeto creado
-        objetosCaida.add(nuevoObjeto);
-        ultimoObjetoTiempo = TimeUtils.nanoTime();
+    }
+    
+    private void aplicarCambioVelocidadObjetos() {
+    	for (ObjetoCaida objeto : objetosCaida) {
+            float velocidadBase = obtenerVelocidadBasePorTipo(objeto);
+            float nuevaVelocidad = velocidadBase * fabricaActual.getMultiplicadorVelocidad();
+            objeto.setVelocidadCaida(nuevaVelocidad);
+        }
+        System.out.println("   Velocidad ajustada para " + objetosCaida.size + " objetos existentes");
+    }
+    
+    /**
+     * NUEVO MÉTODO - Determina velocidad base según tipo de objeto
+     * Mantiene coherencia con el diseño original del juego
+     */
+    private float obtenerVelocidadBasePorTipo(ObjetoCaida objeto) {
+        if (objeto instanceof Trago) return 200f;      // Velocidad base tragos
+        if (objeto instanceof Recuerdo) return 180f;   // Velocidad base recuerdos  
+        if (objeto instanceof PowerUp) return 150f;    // Velocidad base power-ups
+        return 200f; // Default
     }
     
     /**
@@ -189,6 +185,23 @@ public class LluviaRecuerdos {
         // Solo detener música si existe (disposes ahora en CargarArchivos)
         if (musicaKaraoke != null) {
             musicaKaraoke.stop();  // Opcional: detener antes de dispose en Singleton
+        }
+    }
+    
+    /**
+     * NUEVO MÉTODO - Cambiar fábrica cuando el estado emocional cambia
+     * Se llama desde ManejadorEstadosDuelo durante las transiciones
+     */
+    public void actualizarFabrica(EstadoDuelo nuevoEstado) {
+        FabricaDeTragedias nuevaFabrica = registroFabricas.getFabrica(nuevoEstado);
+        
+        if (nuevaFabrica != fabricaActual) {
+            this.fabricaActual = nuevaFabrica;
+            System.out.println("🔄 Cambio de fábrica: " + nuevaFabrica.getClass().getSimpleName());
+            System.out.println("   Ambientación: " + nuevaFabrica.getDescripcionAmbientacion());
+            
+            // Aplicar cambios inmediatos a objetos existentes
+            aplicarCambioVelocidadObjetos();
         }
     }
     
@@ -293,5 +306,19 @@ public class LluviaRecuerdos {
     
     public void setMusicaKaraoke(Music music) { 
         this.musicaKaraoke = music; 
+    }
+    
+    /**
+     * NUEVO GETTER - Para acceso a la fábrica actual (debugging/testing)
+     */
+    public FabricaDeTragedias getFabricaActual() {
+        return fabricaActual;
+    }
+    
+    /**
+     * NUEVO GETTER - Para acceso al registro de fábricas
+     */
+    public RegistroFabricasEstados getRegistroFabricas() {
+        return registroFabricas;
     }
 }
