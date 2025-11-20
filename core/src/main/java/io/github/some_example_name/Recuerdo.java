@@ -34,4 +34,7 @@ public abstract class Recuerdo extends ObjetoCaida {
     public void setDanioEmocional(int danio) {
         this.danioEmocional = danio;
     }
+    public int getDanioEmocional() {
+        return danioEmocional;
+    }
 }

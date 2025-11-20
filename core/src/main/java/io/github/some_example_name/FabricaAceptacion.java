@@ -18,22 +18,55 @@ public class FabricaAceptacion implements FabricaDeTragedias {
     
     @Override
     public Trago crearTrago(float x, float y) {
-        // En ACEPTACIÓN, los tragos se convierten en objetos de claridad
-        // Reutilizamos TragoCervezaBarata pero con efectos completamente diferentes
-        TragoCervezaBarata claridad = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
-        claridad.setPotenciaAlcoholica(0);    // Sin ebriedad - Carlos está sobrio
-        claridad.setBoostAutoestima(8);       // Autoestima pura
-        claridad.setPuntosScore(60);          // Puntos por crecimiento personal
-        return claridad;
+        // Tragos con efectos prolongados para DEPRESIÓN
+        int tipoTrago = MathUtils.random(0, 2);
+        Trago trago;
+        
+        switch(tipoTrago) {
+            case 0: 
+                trago = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
+                trago.setPotenciaAlcoholica(8);  // Aumentada - busca escape
+                trago.setBoostAutoestima(3);     // Reducida - poco efecto
+                trago.setPuntosScore(30);
+                break;
+            case 1:
+                trago = new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
+                trago.setPotenciaAlcoholica(15); // Aumentada
+                trago.setBoostAutoestima(8);     // Reducida
+                trago.setPuntosScore(45);
+                break;
+            default:
+                trago = new TragoTequila(loader.getTragoTequilaTexture(), x, y);
+                trago.setPotenciaAlcoholica(25); // Aumentada
+                trago.setBoostAutoestima(12);     // Reducida
+                trago.setPuntosScore(60);
+                break;
+        }
+        
+        return trago;
     }
     
     @Override
     public Recuerdo crearRecuerdo(float x, float y) {
-        // En ACEPTACIÓN, los recuerdos son tentaciones doradas
-        // Reutilizamos RecuerdoFoto pero con mecánica especial
-        RecuerdoFoto tentacion = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
-        tentacion.setDanioEmocional(25);      // Daño muy alto por recaer
-        return tentacion;
+        int tipo = MathUtils.random(0, 1); // 50% cada uno
+        
+        switch(tipo) {
+        case 0:{
+        	RecuerdoMensaje mensaje = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
+            mensaje.setDanioEmocional(10);
+            return mensaje;
+        }
+        case 1:{
+        	RecuerdoFoto foto = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
+            foto.setDanioEmocional(15);
+            return foto;
+        }
+        default: {
+        	RecuerdoCarta carta = new RecuerdoCarta(loader.getRecuerdoCartaTexture(), x, y);
+        	carta.setDanioEmocional(25);
+        	return carta;
+        }
+    }
     }
     
     @Override
@@ -45,15 +78,5 @@ public class FabricaAceptacion implements FabricaDeTragedias {
             case 1: return new PowerUpCorazaDeMacho(loader.getCorazaTexture(), x, y);
             default: return new PowerUpAutotuneEmocional(loader.getAutotuneTexture(), x, y);
         }
-    }
-    
-    @Override
-    public String getDescripcionAmbientacion() {
-        return "La claridad duele... pero libera. Resiste la tentación final para ganar.";
-    }
-    
-    @Override
-    public float getMultiplicadorVelocidad() {
-        return 1.1f; // Ligero aumento - mundo "claro pero desafiante"
     }
 }

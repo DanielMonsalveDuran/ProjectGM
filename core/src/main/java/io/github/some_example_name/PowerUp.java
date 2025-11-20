@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * BUENAS PRÁCTICAS: Encapsulamiento, principio de abierto/cerrado, polimorfismo
  */
 public abstract class PowerUp extends ObjetoCaida {
-    protected final float duracion;
+    protected float duracion;
     protected final String nombre;
     protected final String descripcion;
     protected final boolean esInstantaneo;
@@ -44,4 +44,7 @@ public abstract class PowerUp extends ObjetoCaida {
     public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
     public boolean esInstantaneo() { return esInstantaneo; }
+    public void setDuracion(float duracion) {
+        this.duracion = duracion;
+    }
 }

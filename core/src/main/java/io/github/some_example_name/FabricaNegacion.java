@@ -16,27 +16,30 @@ public class FabricaNegacion implements FabricaDeTragedias {
         this.loader = CargarArchivos.getInstance();
     }
     
+    
+    //Solo se crean Cervezas Baratas
     @Override
     public Trago crearTrago(float x, float y) {
-        // Reutiliza TragoCervezaBarata pero con valores de NEGACIÓN
-        TragoCervezaBarata trago = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
-        trago.setPotenciaAlcoholica(6);  // Reducida de 8
-        trago.setBoostAutoestima(4);     // Aumentada de 3  
-        trago.setPuntosScore(35);        // Aumentada de 30
-        return trago;
+        TragoCervezaBarata cerveza = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
+        cerveza.setPotenciaAlcoholica(8);
+        cerveza.setBoostAutoestima(3);
+        cerveza.setPuntosScore(30);
+        return cerveza;
     }
+
     
+    //Solo se crean mensajes
     @Override
     public Recuerdo crearRecuerdo(float x, float y) {
-        // Reutiliza RecuerdoFoto existente pero con valores de NEGACIÓN
-        RecuerdoFoto recuerdo = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
-        recuerdo.setDanioEmocional(10);  // Reducido de 15
-        return recuerdo;
+        RecuerdoMensaje mensaje = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
+        mensaje.setDanioEmocional(10);
+        return mensaje;
     }
     
+    
+    //Siempre se crean todos los power ups
     @Override
     public PowerUp crearPowerUp(float x, float y) {
-        // Power-ups normales por ahora - puede expandirse después
         int tipoPowerUp = MathUtils.random(0, 2);
         switch(tipoPowerUp) {
             case 0: return new PowerUpAmnesiaSelectiva(loader.getAmnesiaTexture(), x, y);
@@ -45,13 +48,4 @@ public class FabricaNegacion implements FabricaDeTragedias {
         }
     }
     
-    @Override
-    public String getDescripcionAmbientacion() {
-        return "Todo parece normal... demasiado normal. Los recuerdos duelen menos aquí.";
-    }
-    
-    @Override
-    public float getMultiplicadorVelocidad() {
-        return 0.8f; // 20% más lento - mundo "amigable" de la negación
-    }
 }

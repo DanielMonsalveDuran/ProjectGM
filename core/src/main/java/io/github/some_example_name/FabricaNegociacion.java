@@ -18,54 +18,27 @@ public class FabricaNegociacion implements FabricaDeTragedias {
     
     @Override
     public Trago crearTrago(float x, float y) {
-        // Tragos con efectos balanceados para NEGOCIACIÓN
-        int tipoTrago = MathUtils.random(0, 2);
-        Trago trago;
-        
-        switch(tipoTrago) {
-            case 0: 
-                trago = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
-                // Valores cercanos a originales pero ligeramente ajustados
-                trago.setPotenciaAlcoholica(7);
-                trago.setBoostAutoestima(3);
-                break;
-            case 1:
-                trago = new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
-                trago.setPotenciaAlcoholica(16);
-                trago.setBoostAutoestima(7);
-                break;
-            default:
-                trago = new TragoTequila(loader.getTragoTequilaTexture(), x, y);
-                trago.setPotenciaAlcoholica(26);
-                trago.setBoostAutoestima(11);
-                break;
+        int tipo = MathUtils.random(0, 1);
+        if (tipo == 0) {
+            return new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
+        } else {
+            return new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
         }
-        
-        return trago;
     }
     
     @Override
     public Recuerdo crearRecuerdo(float x, float y) {
-        // Recuerdos con daño moderado para NEGOCIACIÓN
-        int tipoRecuerdo = MathUtils.random(0, 2);
-        Recuerdo recuerdo;
+        int tipo = MathUtils.random(0, 1); // 50% cada uno
         
-        switch(tipoRecuerdo) {
-            case 0: 
-                recuerdo = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
-                recuerdo.setDanioEmocional(14); // Ligeramente reducido
-                break;
-            case 1:
-                recuerdo = new RecuerdoCarta(loader.getRecuerdoCartaTexture(), x, y);
-                recuerdo.setDanioEmocional(24); // Ligeramente reducido
-                break;
-            default:
-                recuerdo = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
-                recuerdo.setDanioEmocional(9);  // Ligeramente reducido
-                break;
+        if (tipo == 0) {
+            RecuerdoMensaje mensaje = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
+            mensaje.setDanioEmocional(10);
+            return mensaje;
+        } else {
+            RecuerdoFoto foto = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
+            foto.setDanioEmocional(15);
+            return foto;
         }
-        
-        return recuerdo;
     }
     
     @Override
@@ -79,13 +52,4 @@ public class FabricaNegociacion implements FabricaDeTragedias {
         }
     }
     
-    @Override
-    public String getDescripcionAmbientacion() {
-        return "Cada movimiento es una apuesta calculada. El riesgo y la recompensa se balancean.";
-    }
-    
-    @Override
-    public float getMultiplicadorVelocidad() {
-        return 1.0f; // Velocidad normal - mundo "equilibrado" de la negociación
-    }
 }

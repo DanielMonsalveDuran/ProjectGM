@@ -47,4 +47,16 @@ public abstract class Trago extends ObjetoCaida {
     public void setPuntosScore(int puntos) {
         this.puntosScore = puntos;
     }
+    
+    public int getPotenciaAlcoholica() {
+        return potenciaAlcoholica;
+    }
+    
+    public int getBoostAutoestima() {
+        return boostAutoestima;
+    }
+    
+    public int getPuntosScore() {
+        return puntosScore;
+    }
 }

@@ -12,10 +12,13 @@ public class RegistroFabricasEstados {
     
     private static RegistroFabricasEstados instance;
     private final Map<EstadoDuelo, FabricaDeTragedias> fabricas;
+    private final Map<EstadoDuelo, ComportamientoEstado> comportamientos;
     
     private RegistroFabricasEstados() {
         fabricas = new HashMap<>();
+        comportamientos = new HashMap<>(); // ✅ AGREGAR esta línea
         inicializarFabricas();
+        inicializarComportamientos(); // ✅ AGREGAR esta línea
     }
     
     public static RegistroFabricasEstados getInstance() {
@@ -34,6 +37,26 @@ public class RegistroFabricasEstados {
         fabricas.put(EstadoDuelo.ACEPTACION, new FabricaAceptacion());
         
         System.out.println("🏭 Registro de Fábricas inicializado con " + fabricas.size() + " fábricas");
+    }
+    
+    private void inicializarComportamientos() {
+        // ✅ REGISTRAR TODOS LOS COMPORTAMIENTOS
+        comportamientos.put(EstadoDuelo.NEGACION, new ComportamientoNegacion());
+        comportamientos.put(EstadoDuelo.IRA, new ComportamientoIra());
+        comportamientos.put(EstadoDuelo.NEGOCIACION, new ComportamientoNegociacion());
+        comportamientos.put(EstadoDuelo.DEPRESION, new ComportamientoDepresion());
+        comportamientos.put(EstadoDuelo.ACEPTACION, new ComportamientoAceptacion());
+        
+        System.out.println("🎯 Registro de Comportamientos inicializado con " + comportamientos.size() + " behaviors");
+    }
+    
+    public ComportamientoEstado getComportamiento(EstadoDuelo estado) {
+        ComportamientoEstado comportamiento = comportamientos.get(estado);
+        if (comportamiento == null) {
+            System.out.println("⚠️  Comportamiento no encontrado para estado: " + estado + ", usando Negación");
+            return comportamientos.get(EstadoDuelo.NEGACION);
+        }
+        return comportamiento;
     }
     
     /**

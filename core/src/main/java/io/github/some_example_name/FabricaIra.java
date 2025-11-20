@@ -16,60 +16,36 @@ public class FabricaIra implements FabricaDeTragedias {
         this.loader = CargarArchivos.getInstance();
     }
     
+    //Se crean o carvezas baratas o whiskys
     @Override
     public Trago crearTrago(float x, float y) {
-        // Elige trago aleatorio pero con valores de IRA
-        int tipoTrago = MathUtils.random(0, 2);
-        Trago trago;
+        int tipo = MathUtils.random(0, 1); // 0-1 (50% cada uno)
         
-        switch(tipoTrago) {
-            case 0: 
-                trago = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
-                trago.setPotenciaAlcoholica(12); // Aumentada de 8
-                trago.setBoostAutoestima(2);     // Reducida de 3
-                break;
-            case 1:
-                trago = new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
-                trago.setPotenciaAlcoholica(20); // Aumentada de 15
-                trago.setBoostAutoestima(6);     // Reducida de 8
-                break;
-            default:
-                trago = new TragoTequila(loader.getTragoTequilaTexture(), x, y);
-                trago.setPotenciaAlcoholica(30); // Aumentada de 25
-                trago.setBoostAutoestima(10);    // Reducida de 12
-                break;
+        if (tipo == 0) {
+            TragoCervezaBarata cerveza = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
+            cerveza.setPotenciaAlcoholica(8);
+            cerveza.setBoostAutoestima(3);
+            cerveza.setPuntosScore(30);
+            return cerveza;
+        } else {
+            TragoWhisky whisky = new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
+            whisky.setPotenciaAlcoholica(15);
+            whisky.setBoostAutoestima(8);
+            whisky.setPuntosScore(45);
+            return whisky;
         }
-        
-        return trago;
     }
     
     @Override
     public Recuerdo crearRecuerdo(float x, float y) {
-        // Recuerdos con daño aumentado para IRA
-        int tipoRecuerdo = MathUtils.random(0, 2);
-        Recuerdo recuerdo;
-        
-        switch(tipoRecuerdo) {
-            case 0: 
-                recuerdo = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
-                recuerdo.setDanioEmocional(20); // Aumentado de 15
-                break;
-            case 1:
-                recuerdo = new RecuerdoCarta(loader.getRecuerdoCartaTexture(), x, y);
-                recuerdo.setDanioEmocional(35); // Aumentado de 25
-                break;
-            default:
-                recuerdo = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
-                recuerdo.setDanioEmocional(15); // Aumentado de 10
-                break;
-        }
-        
-        return recuerdo;
+        RecuerdoMensaje mensaje = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
+        mensaje.setDanioEmocional(10);
+        return mensaje;
     }
     
+    // Power-ups normales por ahora
     @Override
     public PowerUp crearPowerUp(float x, float y) {
-        // Power-ups normales por ahora
         int tipoPowerUp = MathUtils.random(0, 2);
         switch(tipoPowerUp) {
             case 0: return new PowerUpAmnesiaSelectiva(loader.getAmnesiaTexture(), x, y);
@@ -78,13 +54,4 @@ public class FabricaIra implements FabricaDeTragedias {
         }
     }
     
-    @Override
-    public String getDescripcionAmbientacion() {
-        return "El mundo arde con tu furia interior. Todo es más intenso y peligroso.";
-    }
-    
-    @Override
-    public float getMultiplicadorVelocidad() {
-        return 1.4f; // 40% más rápido - mundo "acelerado" de la ira
-    }
 }

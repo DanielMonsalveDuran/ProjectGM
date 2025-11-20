@@ -25,18 +25,21 @@ public class FabricaDepresion implements FabricaDeTragedias {
         switch(tipoTrago) {
             case 0: 
                 trago = new TragoCervezaBarata(loader.getTragoCervezaTexture(), x, y);
-                trago.setPotenciaAlcoholica(9);  // Aumentada - busca escape
-                trago.setBoostAutoestima(2);     // Reducida - poco efecto
+                trago.setPotenciaAlcoholica(8);  // Aumentada - busca escape
+                trago.setBoostAutoestima(3);     // Reducida - poco efecto
+                trago.setPuntosScore(30);
                 break;
             case 1:
                 trago = new TragoWhisky(loader.getTragoWhiskyTexture(), x, y);
-                trago.setPotenciaAlcoholica(18); // Aumentada
-                trago.setBoostAutoestima(5);     // Reducida
+                trago.setPotenciaAlcoholica(15); // Aumentada
+                trago.setBoostAutoestima(8);     // Reducida
+                trago.setPuntosScore(45);
                 break;
             default:
                 trago = new TragoTequila(loader.getTragoTequilaTexture(), x, y);
-                trago.setPotenciaAlcoholica(28); // Aumentada
-                trago.setBoostAutoestima(9);     // Reducida
+                trago.setPotenciaAlcoholica(25); // Aumentada
+                trago.setBoostAutoestima(12);     // Reducida
+                trago.setPuntosScore(60);
                 break;
         }
         
@@ -45,26 +48,17 @@ public class FabricaDepresion implements FabricaDeTragedias {
     
     @Override
     public Recuerdo crearRecuerdo(float x, float y) {
-        // Recuerdos con daño moderado pero inevitables
-        int tipoRecuerdo = MathUtils.random(0, 2);
-        Recuerdo recuerdo;
+        int tipo = MathUtils.random(0, 1); // 50% cada uno
         
-        switch(tipoRecuerdo) {
-            case 0: 
-                recuerdo = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
-                recuerdo.setDanioEmocional(16);
-                break;
-            case 1:
-                recuerdo = new RecuerdoCarta(loader.getRecuerdoCartaTexture(), x, y);
-                recuerdo.setDanioEmocional(27);
-                break;
-            default:
-                recuerdo = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
-                recuerdo.setDanioEmocional(11);
-                break;
+        if (tipo == 0) {
+            RecuerdoMensaje mensaje = new RecuerdoMensaje(loader.getRecuerdoMensajeTexture(), x, y);
+            mensaje.setDanioEmocional(10);
+            return mensaje;
+        } else {
+            RecuerdoFoto foto = new RecuerdoFoto(loader.getRecuerdoFotoTexture(), x, y);
+            foto.setDanioEmocional(15);
+            return foto;
         }
-        
-        return recuerdo;
     }
     
     @Override
@@ -76,15 +70,5 @@ public class FabricaDepresion implements FabricaDeTragedias {
             case 1: return new PowerUpCorazaDeMacho(loader.getCorazaTexture(), x, y);
             default: return new PowerUpAutotuneEmocional(loader.getAutotuneTexture(), x, y);
         }
-    }
-    
-    @Override
-    public String getDescripcionAmbientacion() {
-        return "El tiempo fluye como miel... pesada y lenta. Los recuerdos son inevitables.";
-    }
-    
-    @Override
-    public float getMultiplicadorVelocidad() {
-        return 0.6f; // 40% más lento - mundo "pesado" de la depresión
     }
 }

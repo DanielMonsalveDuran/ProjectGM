@@ -27,6 +27,7 @@ public class LluviaRecuerdos {
     private Music musicaKaraoke;
     private FabricaDeTragedias fabricaActual;
     private RegistroFabricasEstados registroFabricas;
+    private ComportamientoEstado comportamientoActual;
     
     /**
      * Constructor que inicializa las referencias a todas las texturas, sonidos y música
@@ -53,6 +54,7 @@ public class LluviaRecuerdos {
         this.registroFabricas = RegistroFabricasEstados.getInstance();
         // Por defecto empieza con Negación (estado inicial del juego)
         this.fabricaActual = registroFabricas.getFabricaPorDefecto();
+        this.comportamientoActual = registroFabricas.getComportamiento(EstadoDuelo.NEGACION);;
     }
     
     /**
@@ -105,23 +107,12 @@ public class LluviaRecuerdos {
         
         if (nuevoObjeto != null) {
             // Aplicar modificador de velocidad del estado actual a TODOS los objetos
-            float velocidadBase = nuevoObjeto.getVelocidadCaida();
-            float nuevaVelocidad = velocidadBase * fabricaActual.getMultiplicadorVelocidad();
-            nuevoObjeto.setVelocidadCaida(nuevaVelocidad);
-            
+        	aplicarComportamientoAObjeto(nuevoObjeto);
             objetosCaida.add(nuevoObjeto);
             ultimoObjetoTiempo = TimeUtils.nanoTime();
         }
     }
     
-    private void aplicarCambioVelocidadObjetos() {
-    	for (ObjetoCaida objeto : objetosCaida) {
-            float velocidadBase = obtenerVelocidadBasePorTipo(objeto);
-            float nuevaVelocidad = velocidadBase * fabricaActual.getMultiplicadorVelocidad();
-            objeto.setVelocidadCaida(nuevaVelocidad);
-        }
-        System.out.println("   Velocidad ajustada para " + objetosCaida.size + " objetos existentes");
-    }
     
     /**
      * NUEVO MÉTODO - Determina velocidad base según tipo de objeto
@@ -132,6 +123,27 @@ public class LluviaRecuerdos {
         if (objeto instanceof Recuerdo) return 180f;   // Velocidad base recuerdos  
         if (objeto instanceof PowerUp) return 150f;    // Velocidad base power-ups
         return 200f; // Default
+    }
+    
+    private int getPotenciaBase(Trago trago) {
+        if (trago instanceof TragoCervezaBarata) return 8;
+        if (trago instanceof TragoWhisky) return 15;
+        if (trago instanceof TragoTequila) return 25;
+        return 8;
+    }
+
+    private int getBoostBase(Trago trago) {
+        if (trago instanceof TragoCervezaBarata) return 3;
+        if (trago instanceof TragoWhisky) return 8;
+        if (trago instanceof TragoTequila) return 12;
+        return 3;
+    }
+
+    private int getPuntosBase(Trago trago) {
+        if (trago instanceof TragoCervezaBarata) return 30;
+        if (trago instanceof TragoWhisky) return 75;
+        if (trago instanceof TragoTequila) return 100;
+        return 30;
     }
     
     /**
@@ -194,15 +206,61 @@ public class LluviaRecuerdos {
      */
     public void actualizarFabrica(EstadoDuelo nuevoEstado) {
         FabricaDeTragedias nuevaFabrica = registroFabricas.getFabrica(nuevoEstado);
+        ComportamientoEstado nuevoComportamiento = registroFabricas.getComportamiento(nuevoEstado); 
         
         if (nuevaFabrica != fabricaActual) {
             this.fabricaActual = nuevaFabrica;
             System.out.println("🔄 Cambio de fábrica: " + nuevaFabrica.getClass().getSimpleName());
-            System.out.println("   Ambientación: " + nuevaFabrica.getDescripcionAmbientacion());
-            
-            // Aplicar cambios inmediatos a objetos existentes
-            aplicarCambioVelocidadObjetos();
         }
+        
+        if (nuevoComportamiento != comportamientoActual) {
+            this.comportamientoActual = nuevoComportamiento;
+            System.out.println("🎯 Cambio de comportamiento: " + nuevoComportamiento.getClass().getSimpleName());
+            
+            // Aplicar a objetos existentes
+            aplicarComportamientoAObjetosExistentes();
+        }
+    }
+    
+    private void aplicarComportamientoAObjetosExistentes() {
+        for (ObjetoCaida objeto : objetosCaida) {
+            aplicarComportamientoAObjeto(objeto);
+        }
+    }
+    
+    
+    private void aplicarComportamientoAObjeto(ObjetoCaida objeto) {
+        if (comportamientoActual == null) return;
+        
+        // Aplicar velocidad de caída
+        float velocidadBase = obtenerVelocidadBasePorTipo(objeto);
+        float nuevaVelocidad = velocidadBase * comportamientoActual.getMultiplicadorVelocidadCaida();
+        objeto.setVelocidadCaida(nuevaVelocidad);
+        
+        // Modificar valores según el tipo de objeto
+        if (objeto instanceof Trago) {
+            Trago trago = (Trago) objeto;
+            int nuevaPotencia = (int)(trago.getPotenciaAlcoholica() * comportamientoActual.getMultiplicadorPotenciaAlcoholica());
+            int nuevoBoost = (int)(trago.getBoostAutoestima() * comportamientoActual.getMultiplicadorBoostAutoestima());
+            int nuevosPuntos = (int)(trago.getPuntosScore() * comportamientoActual.getMultiplicadorPuntosScore());
+            
+            trago.setPotenciaAlcoholica(nuevaPotencia);
+            trago.setBoostAutoestima(nuevoBoost);
+            trago.setPuntosScore(nuevosPuntos);
+        }
+        
+        if (objeto instanceof Recuerdo) {
+            Recuerdo recuerdo = (Recuerdo) objeto;
+            int nuevoDanio = (int)(recuerdo.getDanioEmocional() * comportamientoActual.getMultiplicadorDanioRecuerdo());
+            recuerdo.setDanioEmocional(nuevoDanio);
+        }
+        
+        if (objeto instanceof PowerUp) {
+            PowerUp powerUp = (PowerUp) objeto;
+            float nuevaDuracion = powerUp.getDuracion() * comportamientoActual.getMultiplicadorDuracionPowerUp();
+            powerUp.setDuracion(nuevaDuracion);
+        }
+        
     }
     
     // Métodos Getters y Setters de los campos de la clase...
