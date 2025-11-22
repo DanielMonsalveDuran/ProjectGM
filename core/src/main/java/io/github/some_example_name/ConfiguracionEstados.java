@@ -77,7 +77,7 @@ public class ConfiguracionEstados {
         new ReglaTransicion(
             EstadoDuelo.NEGACION, EstadoDuelo.IRA,
             Arrays.asList(
-                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 70),
+                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MAYOR_IGUAL, 70),
                 new Condicion(Condicion.TipoParametro.EBRIEDAD, Condicion.Operador.MAYOR_IGUAL, 40),
                 new Condicion(Condicion.TipoParametro.TIEMPO_JUEGO, Condicion.Operador.MAYOR_IGUAL, 30)
             )
@@ -87,7 +87,8 @@ public class ConfiguracionEstados {
         new ReglaTransicion(
             EstadoDuelo.IRA, EstadoDuelo.NEGOCIACION,
             Arrays.asList(
-                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 50),
+                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MAYOR_IGUAL, 50),
+                new Condicion(Condicion.TipoParametro.TIEMPO_ESTADO_ACTUAL, Condicion.Operador.MAYOR_IGUAL, 20),
                 new Condicion(Condicion.TipoParametro.RECUERDOS_EVITADOS, Condicion.Operador.MAYOR_IGUAL, 12),
                 new Condicion(Condicion.TipoParametro.EBRIEDAD, Condicion.Operador.MAYOR_IGUAL, 60)
             )
@@ -97,7 +98,7 @@ public class ConfiguracionEstados {
         new ReglaTransicion(
             EstadoDuelo.NEGOCIACION, EstadoDuelo.DEPRESION,
             Arrays.asList(
-                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 35),
+                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MAYOR_IGUAL, 35),
                 new Condicion(Condicion.TipoParametro.TIEMPO_ESTADO_ACTUAL, Condicion.Operador.MAYOR_IGUAL, 15),
                 new Condicion(Condicion.TipoParametro.RECUERDOS_TOMADOS, Condicion.Operador.MAYOR_IGUAL, 5)
             )
@@ -107,7 +108,7 @@ public class ConfiguracionEstados {
         new ReglaTransicion(
             EstadoDuelo.DEPRESION, EstadoDuelo.ACEPTACION,
             Arrays.asList(
-                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 20),
+                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MAYOR_IGUAL, 20),
                 new Condicion(Condicion.TipoParametro.TIEMPO_ESTADO_ACTUAL, Condicion.Operador.MAYOR_IGUAL, 10),
                 new Condicion(Condicion.TipoParametro.POWERUPS_ACTIVOS, Condicion.Operador.IGUAL, 0)
             )
@@ -119,7 +120,7 @@ public class ConfiguracionEstados {
         new ReglaTransicion(
             EstadoDuelo.IRA, EstadoDuelo.NEGACION,
             Arrays.asList(
-                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MAYOR_IGUAL, 70),
+                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 60),
                 new Condicion(Condicion.TipoParametro.EBRIEDAD, Condicion.Operador.MENOR_IGUAL, 20),
                 new Condicion(Condicion.TipoParametro.RECUERDOS_TOMADOS, Condicion.Operador.MENOR_IGUAL, 3)
             ),
@@ -130,7 +131,7 @@ public class ConfiguracionEstados {
         new ReglaTransicion(
             EstadoDuelo.NEGOCIACION, EstadoDuelo.IRA,
             Arrays.asList(
-                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MAYOR_IGUAL, 55),
+                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 55),
                 new Condicion(Condicion.TipoParametro.POWERUPS_USADOS, Condicion.Operador.MAYOR_IGUAL, 2)
             ),
             true
@@ -140,7 +141,7 @@ public class ConfiguracionEstados {
         new ReglaTransicion(
             EstadoDuelo.DEPRESION, EstadoDuelo.NEGOCIACION,
             Arrays.asList(
-                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MAYOR_IGUAL, 40),
+                new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 40),
                 new Condicion(Condicion.TipoParametro.POWERUPS_USADOS, Condicion.Operador.MAYOR_IGUAL, 1)
             ),
             true
