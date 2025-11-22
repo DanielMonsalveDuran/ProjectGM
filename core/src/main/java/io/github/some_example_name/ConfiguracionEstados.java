@@ -79,7 +79,7 @@ public class ConfiguracionEstados {
             Arrays.asList(
                 new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 70),
                 new Condicion(Condicion.TipoParametro.EBRIEDAD, Condicion.Operador.MAYOR_IGUAL, 40),
-                new Condicion(Condicion.TipoParametro.TIEMPO_JUEGO, Condicion.Operador.MAYOR_IGUAL, 120)
+                new Condicion(Condicion.TipoParametro.TIEMPO_JUEGO, Condicion.Operador.MAYOR_IGUAL, 30)
             )
         ),
         
@@ -98,7 +98,7 @@ public class ConfiguracionEstados {
             EstadoDuelo.NEGOCIACION, EstadoDuelo.DEPRESION,
             Arrays.asList(
                 new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 35),
-                new Condicion(Condicion.TipoParametro.TIEMPO_ESTADO_ACTUAL, Condicion.Operador.MAYOR_IGUAL, 90),
+                new Condicion(Condicion.TipoParametro.TIEMPO_ESTADO_ACTUAL, Condicion.Operador.MAYOR_IGUAL, 15),
                 new Condicion(Condicion.TipoParametro.RECUERDOS_TOMADOS, Condicion.Operador.MAYOR_IGUAL, 5)
             )
         ),
@@ -108,7 +108,7 @@ public class ConfiguracionEstados {
             EstadoDuelo.DEPRESION, EstadoDuelo.ACEPTACION,
             Arrays.asList(
                 new Condicion(Condicion.TipoParametro.AUTOESTIMA, Condicion.Operador.MENOR_IGUAL, 20),
-                new Condicion(Condicion.TipoParametro.TIEMPO_ESTADO_ACTUAL, Condicion.Operador.MAYOR_IGUAL, 60),
+                new Condicion(Condicion.TipoParametro.TIEMPO_ESTADO_ACTUAL, Condicion.Operador.MAYOR_IGUAL, 10),
                 new Condicion(Condicion.TipoParametro.POWERUPS_ACTIVOS, Condicion.Operador.IGUAL, 0)
             )
         ),

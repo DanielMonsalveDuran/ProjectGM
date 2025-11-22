@@ -28,14 +28,16 @@ public class ManejadorEstadosDuelo {
     
     // === NUEVO CAMPO PARA COORDINACIÓN CON ABSTRACT FACTORY ===
     private LluviaRecuerdos lluviaRecuerdos;
+    private KaraokeDespecho juego; // Referencia al juego principal
     
     // Temporizadores
     private float tiempoDesdeUltimaMetrica;
     private static final float INTERVALO_ACTUALIZACION = 0.1f; // 10 veces por segundo
     
-    public ManejadorEstadosDuelo(Carlos carlos, LluviaRecuerdos lluviaRecuerdos) {
+    public ManejadorEstadosDuelo(Carlos carlos, LluviaRecuerdos lluviaRecuerdos, KaraokeDespecho juego) {
         this.carlos = carlos;
         this.lluviaRecuerdos = lluviaRecuerdos; // ← NUEVA REFERENCIA CRUCIAL
+        this.juego = juego;
         this.estadoActual = EstadoDuelo.NEGACION;
         this.tiempoEnEstadoActual = 0f;
         this.tiempoTotalJuego = 0f;
@@ -174,9 +176,10 @@ public class ManejadorEstadosDuelo {
      */
     private void victoriaAceptacion() {
         System.out.println("🏆 VICTORIA - Carlos superó su duelo!");
-        // Aquí iría la lógica para terminar el juego con victoria
-        // Por ahora solo imprimimos el mensaje
         aceptacionActiva = false;
+        if (juego != null) {
+            juego.victoria();
+        }
     }
     
     /**

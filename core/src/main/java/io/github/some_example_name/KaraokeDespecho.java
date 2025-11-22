@@ -1,10 +1,6 @@
 package io.github.some_example_name;
-
-
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,7 +23,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	   private LluviaRecuerdos lluviaRecuerdos;
 	   
 	   private PantallaGameOver pantallaGameOver;
+	   private PantallaVictoria pantallaVictoria; // Nueva pantalla
 	   private boolean juegoActivo;
+	   private boolean victoriaAlcanzada; // Nuevo flag
 	   
 	   private static final int TAMANIO_OBJETO = 64;
 	   
@@ -70,7 +68,7 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	    
 	    
 	    // 3. FINALMENTE crear ManejadorEstados con AMBAS referencias
-        ManejadorEstadosDuelo manejadorEstados = new ManejadorEstadosDuelo(carlos, lluviaRecuerdos);
+        ManejadorEstadosDuelo manejadorEstados = new ManejadorEstadosDuelo(carlos, lluviaRecuerdos, this);
         
         // 4. Inyectar ManejadorEstados en Carlos
         carlos.setManejadorEstados(manejadorEstados);
@@ -83,7 +81,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
 	    lluviaRecuerdos.crear();
 
 	    juegoActivo = true;
+	    victoriaAlcanzada = false;
 	    pantallaGameOver = new PantallaGameOver(this);
+	    pantallaVictoria = new PantallaVictoria(this);
 	}
     
     /**
@@ -99,6 +99,7 @@ public class KaraokeDespecho extends ApplicationAdapter {
         
         // Activa el juego
         juegoActivo = true;
+        victoriaAlcanzada = false;
     }
     
     /**
@@ -119,8 +120,13 @@ public class KaraokeDespecho extends ApplicationAdapter {
         
         // 2. Control de estado de juego
         if (!juegoActivo) {
-            // Si el juego no está activo, solo renderiza la pantalla de Game Over y retorna
-            pantallaGameOver.render(Gdx.graphics.getDeltaTime());
+            // Si hubo victoria, mostrar pantalla de victoria
+            if (victoriaAlcanzada) {
+                pantallaVictoria.render(Gdx.graphics.getDeltaTime());
+            } else {
+                // Si no, es Game Over
+                pantallaGameOver.render(Gdx.graphics.getDeltaTime());
+            }
             return;
         }
         
@@ -240,5 +246,9 @@ public class KaraokeDespecho extends ApplicationAdapter {
     public static int getTamanioObjeto() {
         return TAMANIO_OBJETO;
     }
+    public void victoria() {
+        juegoActivo = false;
+        victoriaAlcanzada = true;
+        pantallaVictoria.setScoreFinal(carlos.getScore());
+    }
 }
-
